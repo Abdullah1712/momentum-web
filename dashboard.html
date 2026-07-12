@@ -760,8 +760,64 @@ a{color:inherit;text-decoration:none;}
     background:none;border:none;color:var(--text-dim);
     padding:8px 14px;border-radius:12px;cursor:pointer;
   }
-  .mobile-nav .nav-item.active{color:var(--primary);background:rgba(91,140,255,0.12);}
-  .mobile-nav .nav-item .icon{width:22px;height:22px;}
+  @media(max-width:900px){
+  .sidebar{
+    display:flex !important;
+    position:fixed; top:0; left:0; height:100%; z-index:200;
+    transform:translateX(-100%);
+    transition:transform .3s var(--ease);
+  }
+  .sidebar.open{ transform:translateX(0); }
+  .hamburger-btn{ display:flex !important; }
+  .sidebar-backdrop{
+    display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:150;
+  }
+  .sidebar-backdrop.show{ display:block; }
+}
+
+@media(max-width:600px){
+  .hero-card{
+    grid-template-columns: 1fr;
+    padding:22px;
+    display:flex;
+    flex-direction:column;
+  }
+  .hero-card > div:first-child{
+    order:2;
+    display:flex;
+    flex-direction:column;
+  }
+  .hero-card > div:first-child .hero-quote{ order:1; }
+  .hero-card > div:first-child .hero-greeting,
+  .hero-card > div:first-child .hero-date{ order:2; }
+  .hero-card > div:first-child .hero-stats{ order:3; }
+  .ring-wrap{
+    order:1;
+    justify-self:center;
+    margin-bottom:16px;
+  }
+  .hero-quote{ max-width:100%; margin-top:0; }
+
+  #newGoalBtn{ padding:11px 14px; }
+  #newGoalBtn .btn-text{ display:none; }
+
+  .filter-select{
+    max-width:110px;
+    font-size:12px;
+    padding:8px 10px;
+  }
+  .search-wrap{ flex:1; min-width:0; }
+
+  .shop-grid{ gap:14px; }
+  .shop-item{ padding:18px; }
+  .shop-icon{ font-size:32px; margin-bottom:8px; }
+  .shop-title{ font-size:16px; }
+  .shop-desc{ font-size:12.5px; margin-bottom:12px; }
+
+  .view{ padding:16px 14px 90px; }
+  .glass{ border-radius:16px; }
+}
+
 }
 </style>
 </head>
@@ -810,13 +866,15 @@ if (!session) {
       </div>
     </div>
   </aside>
-  <nav class="mobile-nav">
-  <button class="nav-item active" data-view="dashboard"><span class="icon" data-icon="home"></span></button>
-  <button class="nav-item" data-view="calendar"><span class="icon" data-icon="calendar"></span></button>
-  <button class="nav-item" data-view="stats"><span class="icon" data-icon="chart"></span></button>
-  <button class="nav-item" data-view="shop"><span class="icon" data-icon="sparkle"></span></button>
-  <button class="nav-item" data-view="settings"><span class="icon" data-icon="settings"></span></button>
-</nav>
+
+
+
+<button class="icon-btn hamburger-btn" id="hamburgerBtn" style="display:none;">
+    <span style="display:block;width:20px;height:2px;background:currentColor;margin:4px 0;"></span>
+    <span style="display:block;width:20px;height:2px;background:currentColor;margin:4px 0;"></span>
+    <span style="display:block;width:20px;height:2px;background:currentColor;margin:4px 0;"></span>
+  </button>
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 
   <!-- MAIN -->
   <main class="main">
@@ -834,7 +892,7 @@ if (!session) {
       <div class="user-title hidden" id="topbarTitle"></div>
       
       <button class="icon-btn" id="themeToggleBtn" title="Hell/Dunkel"><span class="icon" data-icon="sun"></span></button>
-      <button class="btn-primary" id="newGoalBtn"><span class="icon" data-icon="plus"></span>Neues Ziel</button>
+      <button class="btn-primary" id="newGoalBtn"><span class="icon" data-icon="plus"></span><span class="btn-text">Neues Ziel</span></button>
     </div>
 
     <!-- DASHBOARD -->

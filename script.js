@@ -1333,6 +1333,24 @@ function init(){
 init();
 loadWisdom()
 testConnection()
+const hamburgerBtn = document.getElementById('hamburgerBtn');
+const sidebarEl = document.querySelector('.sidebar');
+const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+
+hamburgerBtn?.addEventListener('click', () => {
+  sidebarEl.classList.toggle('open');
+  sidebarBackdrop.classList.toggle('show');
+});
+sidebarBackdrop?.addEventListener('click', () => {
+  sidebarEl.classList.remove('open');
+  sidebarBackdrop.classList.remove('show');
+});
+document.querySelectorAll('.sidebar .nav-item').forEach(btn=>{
+  btn.addEventListener('click', () => {
+    sidebarEl.classList.remove('open');
+    sidebarBackdrop.classList.remove('show');
+  });
+});
 // Theme Toggle Logik
 const themeToggleBtn = document.getElementById('themeToggleBtn');
 const lightModeToggle = document.getElementById('lightModeToggle');
