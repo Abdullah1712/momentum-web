@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Momentum — Deine Ziele. Jeden Tag.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Inter+Tight:wght@600;700;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   MOMENTUM — Premium Produktivitäts-App (Glassmorphism & Full Features)
+   ============================================================ */
+:root {
+    --bg-color: #ffffff;
+    --text-color: #000000;
+}
+
+[data-theme="dark"] {
+    --bg-color: #1a1a1a;
+    --text-color: #ffffff;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.3s, color 0.3s;
+}
+:root{
+  --bg:#0B0F19;
+  --bg-elevated:#0F1524;
+  --card:rgba(20, 27, 45, 0.45);
+  --card-2:rgba(26, 35, 56, 0.55);
+  --card-solid:#141B2D;
+  --border:rgba(255,255,255,0.08);
+  --border-strong:rgba(255,255,255,0.18);
+  --text:#F3F5FA;
+  --text-dim:#9AA4BD;
+  --text-faint:#5D6789;
+  --primary:#5B8CFF;
+  --primary-rgb:91,140,255;
+  --secondary:#7C4DFF;
+  --secondary-rgb:124,77,255;
+  --success:#22C55E;
+  --success-rgb:34,197,94;
+  --warning:#F59E0B;
+  --warning-rgb:245,158,11;
+  --error:#EF4444;
+  --error-rgb:239,68,68;
+  --radius-lg:24px;
+  --radius-md:20px;
+  --radius-sm:14px;
+  --radius-xs:10px;
+  --shadow-soft:0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  --shadow-lift:0 20px 60px -16px rgba(0,0,0,0.65);
+  --ease:cubic-bezier(.16,1,.3,1);
+  --font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --font-display:'Inter Tight','Inter',sans-serif;
+}
+[data-theme="light"]{
+  --bg:#F3F5FA;
+  --bg-elevated:#EBEEF6;
+  --card:rgba(255, 255, 255, 0.6);
+  --card-2:rgba(245, 247, 251, 0.7);
+  --card-solid:#FFFFFF;
+  --border:rgba(15,20,35,0.1);
+  --border-strong:rgba(15,20,35,0.18);
+  --text:#12172A;
+  --text-dim:#5B6480;
+  --text-faint:#9AA4BD;
+  --shadow-soft:0 8px 32px 0 rgba(31, 38, 135, 0.1);
+  --shadow-lift:0 24px 60px -18px rgba(20,30,60,0.22);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-tap-highlight-color:transparent}
+body{
+  font-family:var(--font);
+  background:
+    radial-gradient(1200px 600px at 85% -10%, rgba(var(--secondary-rgb),0.15), transparent 60%),
+    radial-gradient(1000px 700px at -10% 10%, rgba(var(--primary-rgb),0.15), transparent 55%),
+    var(--bg);
+  background-attachment: fixed;
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
+  transition:background .4s var(--ease),color .4s var(--ease);
+}
+::selection{background:rgba(var(--primary-rgb),0.35)}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:10px}
+::-webkit-scrollbar-track{background:transparent}
+
+.glass {
+  background: var(--card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-soft);
+}
+
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+input,select,textarea{font-family:inherit;color:inherit}
+a{color:inherit;text-decoration:none;}
+.icon{display:inline-flex;flex-shrink:0}
+.icon svg{width:100%;height:100%}
+
+/* ---------- Layout shell ---------- */
+.app-shell{display:flex;min-height:100vh}
+
+/* Sidebar */
+.sidebar{
+  width:264px;flex-shrink:0;
+  padding:28px 18px;
+  display:flex;flex-direction:column;gap:6px;
+  border-right:1px solid var(--border);
+  background:linear-gradient(180deg, rgba(255,255,255,0.015), transparent 30%);
+  backdrop-filter: blur(20px);
+  position:sticky;top:0;height:100vh;
+  z-index: 40;
+}
+.brand{display:flex;align-items:center;gap:12px;padding:6px 10px 26px}
+.brand-mark{
+  width:38px;height:38px;border-radius:12px;
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 8px 20px -6px rgba(var(--primary-rgb),0.6);
+  flex-shrink:0;
+}
+.brand-mark svg{width:20px;height:20px;color:#fff}
+.brand-name{font-family:var(--font-display);font-weight:800;font-size:18px;letter-spacing:-0.02em}
+.brand-sub{font-size:11px;color:var(--text-faint);margin-top:-2px}
+
+.nav-item{
+  display:flex;align-items:center;gap:13px;
+  padding:12px 14px;border-radius:var(--radius-xs);
+  color:var(--text-dim);font-weight:600;font-size:14.5px;
+  transition:all .25s var(--ease);position:relative;
+}
+.nav-item .icon{width:19px;height:19px}
+.nav-item:hover{background:var(--border);color:var(--text)}
+.nav-item.active{
+  background:linear-gradient(135deg, rgba(var(--primary-rgb),0.16), rgba(var(--secondary-rgb),0.12));
+  color:#fff;
+  box-shadow:inset 0 0 0 1px rgba(var(--primary-rgb),0.3);
+}
+.nav-item.active .icon{color:var(--primary)}
+.nav-spacer{flex:1}
+.sidebar-footer{padding:10px;border-top:1px solid var(--border);margin-top:8px;padding-top:16px}
+.streak-pill{
+  display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:14px;
+  background:var(--card-2);border:1px solid var(--border);font-size:13px;font-weight:700;
+}
+.streak-pill .icon{width:16px;height:16px;color:var(--warning)}
+.shield-icon { color: var(--primary); margin-left: auto; width: 14px; height: 14px; }
+
+.mobile-nav{display:none}
+
+/* Main */
+.main{flex:1;min-width:0;display:flex;flex-direction:column}
+.topbar{
+  position:sticky;top:0;z-index:30;
+  display:flex;align-items:center;gap:14px;
+  padding:18px 34px;
+  backdrop-filter:blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  background:rgba(11,15,25,0.4);
+  border-bottom:1px solid var(--border);
+}
+[data-theme="light"] .topbar{background:rgba(243,245,250,0.4)}
+
+.user-title {
+  font-size: 12px; font-weight: 700; color: var(--primary);
+  background: rgba(var(--primary-rgb), 0.15); padding: 4px 10px;
+  border-radius: 20px; border: 1px solid rgba(var(--primary-rgb), 0.3);
+  margin-left: 10px; display: inline-flex; align-items: center; gap: 4px;
+}
+
+.search-wrap{flex:1;max-width:320px;position:relative;}
+.search-wrap .icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--text-faint)}
+.search-input{
+  width:100%;padding:11px 14px 11px 40px;border-radius:14px;
+  background:var(--card-2);border:1px solid var(--border);
+  color:var(--text);font-size:14px;outline:none;transition:all .2s var(--ease);
+}
+.search-input:focus{border-color:rgba(var(--primary-rgb),0.55);box-shadow:0 0 0 4px rgba(var(--primary-rgb),0.12)}
+.filter-select{
+  padding:11px 42px 11px 14px;
+  border-radius:14px;
+  background-color:var(--card-2);
+  border:1px solid var(--border);
+  color:var(--text);
+  font-size:13px;
+  font-weight:700;
+  outline:none;
+  cursor:pointer;
+  appearance:none;
+  -webkit-appearance:none;
+  -moz-appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%239AA4BD' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right 14px center;
+  background-size:14px;
+}
+.filter-select:focus{
+  border-color:rgba(var(--primary-rgb),0.55);
+  box-shadow:0 0 0 4px rgba(var(--primary-rgb),0.12);
+}
+.filter-select option{
+  background:var(--card-solid);
+  color:var(--text);
+}
+.topbar-spacer{flex:1}
+.icon-btn{
+  width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+  background:var(--card-2);border:1px solid var(--border);color:var(--text-dim);transition:all .2s var(--ease);
+}
+.icon-btn:hover{color:var(--text);border-color:var(--border-strong);transform:translateY(-1px)}
+.icon-btn .icon{width:17px;height:17px}
+
+.btn-primary{
+  display:inline-flex;align-items:center;gap:9px;
+  padding:11px 20px;border-radius:14px;font-weight:700;font-size:14px;
+  background:linear-gradient(135deg,var(--primary),var(--secondary));color:#fff;
+  box-shadow:0 10px 26px -10px rgba(var(--primary-rgb),0.55);
+  transition:transform .2s var(--ease),box-shadow .2s var(--ease);
+  white-space:nowrap;
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 16px 32px -10px rgba(var(--primary-rgb),0.65)}
+.btn-primary:active{transform:translateY(0)}
+.btn-primary .icon{width:16px;height:16px}
+.btn-secondary{
+  padding:10px 18px;border-radius:14px;font-weight:600;font-size:14px;
+  background:var(--card-2);border:1px solid var(--border);color:var(--text);
+  transition:all .2s var(--ease);
+}
+.btn-secondary:hover{border-color:var(--border-strong);background:var(--card)}
+.btn-danger{
+  padding:10px 18px;border-radius:14px;font-weight:600;font-size:14px;
+  background:rgba(var(--error-rgb),0.12);border:1px solid rgba(var(--error-rgb),0.3);color:#FF8181;
+  transition:all .2s var(--ease);
+}
+.btn-danger:hover{background:rgba(var(--error-rgb),0.2)}
+
+.view{padding:30px 34px 90px;animation:viewIn .45s var(--ease)}
+.view[hidden]{display:none}
+@keyframes viewIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* ---------- Dashboard hero ---------- */
+.hero-card{
+  border-radius:var(--radius-lg);
+  padding:32px;
+  display:grid;grid-template-columns:1fr auto;gap:28px;align-items:center;
+  position:relative;overflow:hidden;
+}
+.hero-card::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(500px 260px at 100% 0%, rgba(var(--secondary-rgb),0.14), transparent 60%);
+  pointer-events:none;
+}
+.hero-greeting{font-family:var(--font-display);font-size:28px;font-weight:800;letter-spacing:-0.02em}
+.hero-date{color:var(--text-dim);font-size:14px;margin-top:4px;font-weight:500}
+.hero-quote{
+  margin-top:18px;padding:16px 18px;border-radius:14px;
+  background:rgba(var(--primary-rgb),0.08);border:1px solid rgba(var(--primary-rgb),0.18);
+  color:var(--text-dim);font-size:13.5px;max-width:520px;
+}
+.wisdom-label{font-size:11px;font-weight:800;color:var(--primary);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+.wisdom-arabic{
+  font-family:'Amiri','Traditional Arabic',serif;font-size:21px;line-height:2;color:var(--text);
+  margin-bottom:6px;text-align:right;font-style:normal;direction:rtl;cursor:pointer;
+}
+.wisdom-hint{font-size:10.5px;color:var(--text-faint);text-align:right;cursor:pointer;user-select:none;margin-bottom:4px}
+.wisdom-details{max-height:0;overflow:hidden;opacity:0;transition:max-height .35s var(--ease),opacity .25s var(--ease),margin-top .25s var(--ease)}
+.wisdom-details.show{max-height:220px;opacity:1;margin-top:8px}
+.wisdom-translation{font-size:13px;color:var(--text-dim);font-style:italic;line-height:1.5}
+.wisdom-ref{opacity:.65;font-style:normal;font-size:11.5px}
+.hero-stats{display:flex;gap:22px;margin-top:22px;flex-wrap:wrap}
+.hero-stat{display:flex;flex-direction:column;gap:2px}
+.hero-stat .num{font-family:var(--font-display);font-size:22px;font-weight:800}
+.hero-stat .lbl{font-size:11.5px;color:var(--text-faint);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.hero-stat.streak .num{color:var(--warning)}
+.hero-stat.xp .num{color:var(--secondary)}
+
+.ring-wrap{position:relative;width:172px;height:172px;flex-shrink:0}
+.ring-wrap svg{transform:rotate(-90deg);width:100%;height:100%}
+.ring-bg{fill:none;stroke:var(--border);stroke-width:12}
+.ring-fg{fill:none;stroke:url(#ringGrad);stroke-width:12;stroke-linecap:round;transition:stroke-dashoffset 1s var(--ease)}
+.ring-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring-pct{font-family:var(--font-display);font-size:32px;font-weight:800}
+.ring-sub{font-size:10px;color:var(--text-faint);font-weight:600;margin-top:2px; text-transform: uppercase;}
+.ring-level{
+  position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);
+  padding:4px 12px;border-radius:20px;background:linear-gradient(135deg,var(--primary),var(--secondary));
+  font-size:11px;font-weight:800;color:#fff;white-space:nowrap;box-shadow:0 6px 16px -4px rgba(var(--primary-rgb),0.6);
+}
+
+.section-head{display:flex;align-items:center;justify-content:space-between;margin:34px 0 16px}
+.section-title{font-family:var(--font-display);font-size:18px;font-weight:800;letter-spacing:-0.01em;display:flex;align-items:center;gap:10px}
+.section-title .count-badge{
+  font-size:11.5px;font-weight:700;color:var(--text-dim);background:var(--card-2);
+  border:1px solid var(--border);padding:2px 9px;border-radius:20px;
+}
+
+/* Task cards grid */
+.task-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+.task-card{
+  border-radius:var(--radius-md);
+  padding:18px;display:flex;gap:14px;align-items:flex-start;position:relative;
+  transition:transform .25s var(--ease),border-color .25s var(--ease),box-shadow .25s var(--ease), opacity .25s;
+  cursor:grab;
+  z-index:1;
+}
+.task-card:hover{border-color:var(--border-strong);box-shadow:var(--shadow-lift);transform:translateY(-2px)}
+.task-card.menu-open{
+  z-index:80;
+}
+.task-card.dragging{opacity:.4}
+.task-card.done{opacity:.55; filter: grayscale(0.4);}
+.task-card.done .task-title{text-decoration:line-through;text-decoration-color:var(--success)}
+.task-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;border-radius:var(--radius-md) 0 0 var(--radius-md);background:var(--accent-c,var(--primary))}
+
+.floating-xp{
+  position:absolute;top:14px;left:56px;font-family:var(--font-display);font-weight:800;font-size:14px;
+  color:var(--secondary);pointer-events:none;z-index:5;
+  animation:floatUpXp 1.15s var(--ease) forwards;
+}
+@keyframes floatUpXp{
+  0%{opacity:0;transform:translateY(4px) scale(.85)}
+  15%{opacity:1;transform:translateY(0) scale(1.08)}
+  70%{opacity:1;transform:translateY(-22px) scale(1)}
+  100%{opacity:0;transform:translateY(-38px) scale(1)}
+}
+
+.task-check{
+  width:26px;height:26px;border-radius:9px;border:2px solid var(--border-strong);flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;margin-top:2px;transition:all .25s var(--ease);
+  background:rgba(0,0,0,0.2);
+}
+.task-check svg{width:14px;height:14px;color:#fff;opacity:0;transform:scale(.4);transition:all .25s var(--ease)}
+.task-card.done .task-check{background:var(--success);border-color:var(--success)}
+.task-card.done .task-check svg{opacity:1;transform:scale(1)}
+.task-card.pop .task-check{animation:checkPop .45s var(--ease)}
+@keyframes checkPop{0%{transform:scale(1)}40%{transform:scale(1.28)}100%{transform:scale(1)}}
+
+.task-body{flex:1;min-width:0}
+.task-top{display:flex;align-items:center;gap:9px}
+.task-emoji{font-size:19px;line-height:1}
+.task-title{font-weight:700;font-size:15px;letter-spacing:-0.005em}
+.task-desc{color:var(--text-dim);font-size:12.8px;margin-top:4px;line-height:1.5}
+.task-meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.tag{
+  font-size:10.8px;font-weight:700;padding:4px 9px;border-radius:8px;
+  background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--text-dim);
+  display:inline-flex;align-items:center;gap:4px;
+}
+.tag.prio-hoch{color:#FF8181;background:rgba(var(--error-rgb),0.12);border-color:rgba(var(--error-rgb),0.25)}
+.tag.prio-mittel{color:#FFC469;background:rgba(var(--warning-rgb),0.12);border-color:rgba(var(--warning-rgb),0.25)}
+.tag.prio-niedrig{color:#7FE0A0;background:rgba(var(--success-rgb),0.12);border-color:rgba(var(--success-rgb),0.25)}
+.tag.xp-tag{color:var(--secondary);background:rgba(var(--secondary-rgb),0.12);border-color:rgba(var(--secondary-rgb),0.25)}
+
+/* Dropdown */
+.task-menu-btn{
+  width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;
+  color:var(--text-faint);flex-shrink:0;transition:all .2s var(--ease);
+}
+.task-menu-btn:hover{background:var(--border);color:var(--text)}
+.task-menu-btn .icon{width:16px;height:16px}
+.dropdown{
+  position:absolute;top:44px;right:14px;background:var(--card-solid);border:1px solid var(--border-strong);
+  border-radius:14px;padding:6px;min-width:190px;box-shadow:var(--shadow-lift);z-index:50;
+  display:flex;flex-direction:column;gap:1px;animation:dropIn .18s var(--ease);
+}
+@keyframes dropIn{from{opacity:0;transform:translateY(-6px) scale(.97)}to{opacity:1;transform:none}}
+.dropdown button{
+  display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:9px;font-size:13px;font-weight:600;
+  color:var(--text-dim);text-align:left;
+}
+.dropdown button:hover{background:var(--card-2);color:var(--text)}
+.dropdown button.danger:hover{color:#FF8181;background:rgba(var(--error-rgb),0.1)}
+.dropdown hr{border:none;border-top:1px solid var(--border);margin:4px 2px}
+
+/* Subquests */
+.subquest-toggle-btn{
+  width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;
+  color:var(--text-faint);flex-shrink:0;transition:all .2s var(--ease);
+}
+.subquest-toggle-btn:hover{background:var(--card-2);color:var(--text)}
+.subquest-toggle-btn .icon{width:15px;height:15px;transition:transform .25s var(--ease)}
+.subquest-toggle-btn.expanded .icon{transform:rotate(90deg)}
+.subquest-list{
+  margin-top:12px;padding-top:12px;border-top:1px dashed var(--border);
+  display:flex;flex-direction:column;gap:8px;animation:subIn .25s var(--ease);
+}
+@keyframes subIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+.subquest-item{display:flex;align-items:center;gap:9px}
+.subquest-check{
+  width:19px;height:19px;border-radius:6px;border:1.5px solid var(--border-strong);flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s var(--ease);background:rgba(0,0,0,0.2);
+}
+.subquest-check svg{width:11px;height:11px;color:#fff;opacity:0;transform:scale(.5);transition:all .2s var(--ease)}
+.subquest-check.done{background:var(--success);border-color:var(--success)}
+.subquest-check.done svg{opacity:1;transform:scale(1)}
+.subquest-title{font-size:12.8px;color:var(--text-dim);font-weight:600}
+.subquest-item.done .subquest-title{text-decoration:line-through;opacity:.55}
+.subquest-progress-tag{color:var(--secondary)}
+
+.empty-state{
+  grid-column:1/-1;text-align:center;padding:56px 20px;color:var(--text-faint);
+  border:1.5px dashed var(--border-strong);border-radius:var(--radius-md);
+}
+.empty-state .icon{width:38px;height:38px;margin:0 auto 14px;color:var(--text-faint)}
+.empty-state h3{color:var(--text-dim);font-size:15px;margin-bottom:6px;font-family:var(--font-display)}
+.empty-state p{font-size:13px;max-width:320px;margin:0 auto}
+
+.celebrate-card{
+  grid-column:1/-1;padding:26px;border-radius:var(--radius-md);text-align:center;
+  background:linear-gradient(135deg, rgba(var(--success-rgb),0.14), rgba(var(--primary-rgb),0.1));
+  border:1px solid rgba(var(--success-rgb),0.3);animation:celebrateIn .5s var(--ease);
+}
+@keyframes celebrateIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:none}}
+
+/* Calendar Summary Modal / UI */
+.cal-layout{display:grid;grid-template-columns:1fr 380px;gap:22px;align-items:start}
+@media(max-width:1000px){.cal-layout{grid-template-columns:1fr}}
+.cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.cal-title{font-family:var(--font-display);font-weight:800;font-size:18px}
+.cal-nav{display:flex;gap:6px}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.cal-dow{text-align:center;font-size:11px;font-weight:700;color:var(--text-faint);padding-bottom:6px;text-transform:uppercase;letter-spacing:.04em}
+.cal-day{
+  aspect-ratio:1;border-radius:13px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
+  border:1px solid transparent;font-size:13px;font-weight:600;color:var(--text-dim);position:relative;
+  transition:all .18s var(--ease);
+}
+.cal-day.pad{visibility:hidden}
+.cal-day:not(.pad):hover{background:var(--card-2);border-color:var(--border)}
+.cal-day.today{border-color:var(--primary);color:var(--text)}
+.cal-day.selected{background:linear-gradient(135deg,var(--primary),var(--secondary));color:#fff !important;box-shadow:0 8px 20px -8px rgba(var(--primary-rgb),0.6)}
+.cal-day .dot-row{display:flex;gap:3px;height:5px}
+.cal-day .dot{width:5px;height:5px;border-radius:50%;background:var(--text-faint)}
+.cal-day.done-all .dot{background:var(--success)}
+.cal-day.done-partial .dot{background:var(--warning)}
+.cal-day.selected .dot{background:#fff}
+.cal-legend{display:flex;gap:16px;margin-top:16px;flex-wrap:wrap}
+.cal-legend span{font-size:11.5px;color:var(--text-faint);display:flex;align-items:center;gap:6px;font-weight:600}
+.legend-dot{width:8px;height:8px;border-radius:50%}
+
+/* Read-Only Day Panel */
+.day-panel-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.day-panel-title{font-family:var(--font-display);font-weight:800;font-size:16px}
+.day-panel-sub{font-size:12px;color:var(--text-faint);margin-top:2px}
+.day-summary-list { display: flex; flex-direction: column; gap: 8px; max-height:520px; overflow-y:auto; padding-right:4px;}
+.day-summary-item {
+  display: flex; flex-direction: column; gap: 8px; padding: 12px;
+  background: var(--card-2); border-radius: 12px; border: 1px solid var(--border);
+  cursor: pointer; transition: all .2s var(--ease);
+}
+.day-summary-item:hover { border-color: var(--border-strong); }
+.day-summary-item.done { opacity: 0.6; }
+.day-summary-item.done .title { text-decoration: line-through; }
+.ds-top { display: flex; align-items: center; gap: 12px; }
+.day-summary-icon { font-size: 18px; }
+.day-summary-text { flex: 1; display: flex; flex-direction: column; }
+.day-summary-text .title { font-size: 14px; font-weight: 600; }
+.day-summary-text .sub { font-size: 11px; color: var(--text-dim); margin-top: 2px; }
+.day-summary-status { font-size: 12px; font-weight: 700; }
+.ds-details { border-top: 1px dashed var(--border); padding-top: 8px; display: none; font-size: 12.5px; color: var(--text-dim); }
+.day-summary-item.expanded .ds-details { display: block; animation: subIn .2s var(--ease); }
+.status-done { color: var(--success); }
+.status-missed { color: var(--error); }
+.status-open { color: var(--text-faint); }
+
+/* ---------- Stats & Heatmap ---------- */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-bottom:24px}
+.stat-card{padding:20px; border-radius:var(--radius-md);}
+.stat-card .icon-wrap{
+  width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;margin-bottom:12px;
+}
+.stat-card .icon-wrap .icon{width:19px;height:19px}
+.stat-card .num{font-family:var(--font-display);font-size:26px;font-weight:800;letter-spacing:-0.02em; line-height: 1.2;}
+.stat-card .lbl{font-size:12px;color:var(--text-faint);font-weight:600;margin-top:2px}
+
+.chart-card{padding:24px;border-radius:var(--radius-lg);margin-bottom:22px}
+.chart-tabs{display:flex;gap:6px}
+.chart-tab{padding:8px 16px;border-radius:11px;font-size:13px;font-weight:700;color:var(--text-faint);background:var(--card-2);border:1px solid var(--border)}
+.chart-tab.active{color:#fff;background:linear-gradient(135deg,var(--primary),var(--secondary));border-color:transparent}
+.chart-svg-wrap{margin-top:18px;width:100%;overflow-x:auto}
+
+.heatmap-scroll{overflow-x:auto;padding-bottom:6px}
+.heatmap-grid{display:grid;grid-auto-flow:column;grid-template-rows:repeat(7,12px);gap:3px;width:max-content}
+.heatmap-cell{width:12px;height:12px;border-radius:3px;background:rgba(255,255,255,0.05)}
+
+.badges-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px}
+.badge-card{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--radius-md);padding:18px;text-align:center;
+  transition:all .25s var(--ease);
+}
+.badge-card.locked{opacity:.4;filter:grayscale(1)}
+.badge-card .badge-emoji{font-size:32px;margin-bottom:8px}
+.badge-card h4{font-size:13.5px;font-weight:700;margin-bottom:4px}
+.badge-card p{font-size:11.5px;color:var(--text-faint)}
+
+/* ---------- Shop & Pass ---------- */
+.shop-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+.shop-item {
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  padding: 24px; border-radius: var(--radius-lg); border: 1px solid var(--border);
+  position: relative; overflow: hidden;
+}
+.shop-item.locked { opacity: 0.6; filter: grayscale(0.8); }
+.shop-icon { font-size: 42px; margin-bottom: 12px; }
+.shop-title { font-family: var(--font-display); font-weight: 800; font-size: 18px; margin-bottom: 6px; }
+.shop-desc { font-size: 13px; color: var(--text-dim); margin-bottom: 16px; }
+.shop-price {
+  font-size: 14px; font-weight: 800; color: var(--secondary); display: flex; align-items: center; gap: 6px;
+  background: rgba(var(--secondary-rgb), 0.15); padding: 6px 14px; border-radius: 20px; margin-bottom: 16px;
+}
+.season-banner {
+  background: linear-gradient(135deg, rgba(var(--primary-rgb),0.2), rgba(var(--secondary-rgb),0.2));
+  border: 1px solid var(--primary); padding: 24px; border-radius: var(--radius-lg); margin-bottom: 24px;
+}
+.season-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.season-title { font-family: var(--font-display); font-size: 22px; font-weight: 800; }
+.season-xp { font-weight: 800; color: var(--primary); }
+.season-track { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 10px; }
+.season-reward {
+  flex-shrink: 0; width: 100px; height: 120px; background: var(--card-2); border-radius: 14px;
+  border: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 8px; position: relative;
+}
+.season-reward.unlocked { border-color: var(--success); background: rgba(var(--success-rgb), 0.1); }
+.season-reward .req { font-size: 10px; color: var(--text-faint); font-weight: 700; position: absolute; top: 8px; }
+
+/* ---------- Settings ---------- */
+.settings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 18px;
+  align-items: start; /* Ganz wichtig: Verhindert das Strecken nach unten */
+}.settings-card{padding:24px;border-radius:var(--radius-lg);}
+.settings-card h3{font-family:var(--font-display);font-size:15.5px;margin-bottom:16px;display:flex;align-items:center;gap:9px}
+.settings-card h3 .icon{width:17px;height:17px;color:var(--primary)}
+.setting-row {
+  display: flex;
+  align-items: center; /* Mittig zum Text ausrichten */
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 0; /* Etwas mehr Platz für die Finger */
+  border-bottom: 1px solid var(--border);
+}
+
+/* Verhindert, dass die Buttons zu weit unten hängen, wenn der Text zweizeilig ist */
+.setting-row > div:first-child {
+  flex: 1;
+}
+.setting-row:last-child{border-bottom:none}
+.setting-row .lbl{font-size:13.5px;font-weight:600}
+.setting-row .desc{font-size:11.5px;color:var(--text-faint);margin-top:2px}
+.swatches{display:flex;gap:8px}
+.swatch{width:28px;height:28px;border-radius:50%;border:2px solid transparent;transition:all .2s var(--ease)}
+.swatch.active{border-color:var(--text);transform:scale(1.12)}
+.toggle{width:46px;height:26px;border-radius:20px;background:var(--card-2);border:1px solid var(--border);position:relative;transition:all .2s var(--ease)}
+.toggle::after{content:'';position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;background:var(--text-faint);transition:all .25s var(--ease)}
+.toggle.on{background:linear-gradient(135deg,var(--primary),var(--secondary));border-color:transparent}
+.toggle.on::after{left:22px;background:#fff}
+.select-mini{
+  padding:8px 34px 8px 12px;
+  border-radius:10px;
+  background-color:var(--card-2);
+  border:1px solid var(--border);
+  color:var(--text);
+  font-size:13px;
+  font-weight:600;
+  appearance:none;
+  -webkit-appearance:none;
+  -moz-appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%239AA4BD' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right 10px center;
+  background-size:14px;
+}
+.select-mini option{
+  background:var(--card-solid);
+  color:var(--text);
+}
+/* ---------- AI Assistant Chat ---------- */
+.ai-fab {
+  position: fixed; bottom: 26px; right: 26px; width: 60px; height: 60px; border-radius: 50%;
+  background: linear-gradient(135deg, #FF6B6B, #7C4DFF); box-shadow: 0 12px 30px rgba(124,77,255,0.4);
+  display: flex; align-items: center; justify-content: center; color: #fff; cursor: pointer; z-index: 100;
+  transition: transform 0.3s var(--ease); border: none; outline: none;
+}
+.ai-fab:hover { transform: scale(1.08) rotate(5deg); }
+.ai-fab svg { width: 28px; height: 28px; }
+
+.ai-chat-window {
+  position: fixed; bottom: 100px; right: 26px; width: 360px; max-height: 500px;
+  border-radius: var(--radius-lg); display: flex; flex-direction: column; z-index: 100;
+  transform: translateY(20px) scale(0.95); opacity: 0; pointer-events: none; transition: all 0.3s var(--ease);
+  overflow: hidden;
+}
+.ai-chat-window.open { transform: translateY(0) scale(1); opacity: 1; pointer-events: auto; }
+.ai-chat-header {
+  padding: 16px 20px; background: rgba(0,0,0,0.2); border-bottom: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: center;
+}
+.ai-chat-title { font-family: var(--font-display); font-weight: 800; font-size: 16px; display: flex; align-items: center; gap: 8px; }
+.ai-status { font-size: 10px; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; padding: 5px 9px; border-radius: 999px; border: 1px solid var(--border); color: var(--text-faint); background: rgba(255,255,255,0.05); }
+.ai-status.online { color: #9CFFB0; border-color: rgba(34,197,94,.35); background: rgba(34,197,94,.12); }
+.ai-status.local { color: #B9C7FF; border-color: rgba(var(--primary-rgb),.3); background: rgba(var(--primary-rgb),.12); }
+.ai-chat-body { flex: 1; padding: 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; min-height: 250px; background: rgba(0,0,0,0.1); }
+.ai-msg { padding: 12px 16px; border-radius: 16px; font-size: 13.5px; line-height: 1.55; max-width: 88%; white-space: pre-wrap; }
+.ai-msg.bot { background: var(--card-2); border: 1px solid var(--border); border-bottom-left-radius: 4px; align-self: flex-start; }
+.ai-msg.user { background: var(--primary); color: #fff; border-bottom-right-radius: 4px; align-self: flex-end; }
+.ai-chat-input { padding: 12px; background: rgba(0,0,0,0.2); border-top: 1px solid var(--border); display: flex; gap: 8px; }
+.ai-chat-input input {
+  flex: 1; background: var(--card); border: 1px solid var(--border); padding: 10px 14px;
+  border-radius: 20px; color: var(--text); font-size: 13.5px;
+}
+.ai-chat-input button {
+  width: 40px; height: 40px; border-radius: 50%; background: var(--primary); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+}
+.ai-quick-actions { display: flex; gap: 6px; padding: 0 16px 12px; overflow-x: auto; background: rgba(0,0,0,0.1); }
+.ai-chip {
+  padding: 6px 12px; background: var(--card); border: 1px solid var(--border); border-radius: 16px;
+  font-size: 11.5px; font-weight: 600; color: var(--text-dim); white-space: nowrap; cursor: pointer;
+}
+.ai-chip:hover { color: var(--text); border-color: var(--primary); }
+
+/* ---------- Modals & Utilities ---------- */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(4,6,14,0.75);backdrop-filter:blur(8px);
+  display:flex;align-items:center;justify-content:center;z-index:200;padding:20px;
+  opacity:0;pointer-events:none;transition:opacity .25s var(--ease);
+}
+.modal-overlay.open{opacity:1;pointer-events:auto}
+.modal{
+  background:var(--card-solid); border:1px solid var(--border-strong);border-radius:var(--radius-lg);
+  width:100%;max-width:560px;max-height:88vh;overflow-y:auto;box-shadow:var(--shadow-lift);
+  transform:scale(.94) translateY(14px);transition:transform .3s var(--ease);
+}
+.modal-overlay.open .modal{transform:none}
+.modal-head{display:flex;align-items:center;justify-content:space-between;padding:22px 24px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--card-solid);z-index:2}
+.modal-head h2{font-family:var(--font-display);font-size:18px;font-weight:800}
+.modal-body{padding:22px 24px;display:flex;flex-direction:column;gap:18px}
+.modal-foot{display:flex;justify-content:flex-end;gap:10px;padding:18px 24px;border-top:1px solid var(--border)}
+.field{display:flex;flex-direction:column;gap:7px}
+.field label{font-size:12.5px;font-weight:700;color:var(--text-dim)}
+.field input[type=text],.field input[type=number],.field input[type=date],.field textarea,.field select{
+  padding:11px 13px;
+  border-radius:12px;
+  background:rgba(0,0,0,0.2);
+  border:1px solid var(--border);
+  color:var(--text);
+  font-size:14px;
+  outline:none;
+  transition:all .2s var(--ease);
+  width:100%;
+}
+
+.field select{
+  padding-right:40px;
+  appearance:none;
+  -webkit-appearance:none;
+  -moz-appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%239AA4BD' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right 12px center;
+  background-size:14px;
+}
+
+.field select option{
+  background:var(--card-solid);
+  color:var(--text);
+}
+
+.field input:focus,.field textarea:focus,.field select:focus{
+  border-color:rgba(var(--primary-rgb),0.55);
+  box-shadow:0 0 0 4px rgba(var(--primary-rgb),0.12);
+}
+
+.field textarea{
+  resize:vertical;
+  min-height:64px;
+}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.emoji-picker{display:grid;grid-template-columns:repeat(8,1fr);gap:6px}
+.emoji-opt{
+  aspect-ratio:1;border-radius:11px;background:rgba(0,0,0,0.2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;
+  font-size:18px;transition:all .18s var(--ease);
+}
+.emoji-opt.active{border-color:var(--primary);background:rgba(var(--primary-rgb),0.14);transform:scale(1.08)}
+.chip-group{display:flex;flex-wrap:wrap;gap:8px}
+.chip{
+  padding:8px 14px;border-radius:11px;background:rgba(0,0,0,0.2);border:1.5px solid var(--border);font-size:13px;font-weight:600;
+  color:var(--text-dim);transition:all .18s var(--ease);
+}
+.chip.active{background:linear-gradient(135deg,var(--primary),var(--secondary));color:#fff;border-color:transparent}
+.weekday-picker{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.weekday-picker .chip{padding:8px 0;text-align:center}
+
+.subquest-editor-row{display:flex;gap:8px}
+.subquest-editor-row input{flex:1;}
+.subquest-editor-list{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+.subquest-editor-item{
+  display:flex;align-items:center;justify-content:space-between;gap:8px;
+  padding:8px 12px;border-radius:10px;background:rgba(0,0,0,0.2);border:1px solid var(--border);font-size:13px;font-weight:600;
+}
+.subquest-editor-item button{color:var(--text-faint);display:flex;align-items:center;padding:2px}
+.subquest-editor-item button:hover{color:#FF8181}
+
+/* Toasts */
+.toast-stack{position:fixed;bottom:26px;left:26px;display:flex;flex-direction:column;gap:10px;z-index:400}
+.toast{
+  background:var(--card-solid);border:1px solid var(--border-strong);border-radius:14px;padding:14px 16px;
+  display:flex;align-items:center;gap:11px;box-shadow:var(--shadow-lift);min-width:260px;max-width:360px;
+  animation:toastIn .35s var(--ease);font-size:13.5px;font-weight:600;
+}
+@keyframes toastIn{from{opacity:0;transform:translateX(-30px)}to{opacity:1;transform:none}}
+.toast.out{animation:toastOut .3s var(--ease) forwards}
+@keyframes toastOut{to{opacity:0;transform:translateX(-30px)}}
+.toast .icon{width:18px;height:18px;flex-shrink:0}
+.toast.success .icon{color:var(--success)}
+.toast.error .icon{color:var(--error)}
+.toast.info .icon{color:var(--primary)}
+.toast.achv .icon{color:var(--warning)}
+
+/* Achievement popup */
+.achv-popup{
+  position:fixed;top:26px;left:50%;transform:translateX(-50%) translateY(-140%);
+  background:linear-gradient(135deg,var(--card-solid),var(--card-2));border:1px solid rgba(var(--warning-rgb),0.4);
+  border-radius:18px;padding:16px 22px;display:flex;align-items:center;gap:14px;box-shadow:var(--shadow-lift);
+  z-index:500;transition:transform .5s var(--ease);
+}
+.achv-popup.show{transform:translateX(-50%) translateY(0)}
+.achv-popup .emoji{font-size:30px}
+.achv-popup .t1{font-size:11px;color:var(--warning);font-weight:800;text-transform:uppercase;letter-spacing:.05em}
+.achv-popup .t2{font-family:var(--font-display);font-weight:800;font-size:15px}
+
+/* confetti canvas */
+#confettiCanvas{position:fixed;inset:0;pointer-events:none;z-index:600}
+
+/* misc */
+.hidden{display:none !important}
+
+@media(max-width:900px){
+  .sidebar{display:none}
+.view {
+  padding: 30px 34px 90px;
+  animation: viewIn .45s var(--ease);
+  display: flex;             /* Neu: Flexbox aktivieren */
+  flex-direction: column;    /* Neu: Alles untereinander */
+  justify-content: flex-start; /* Neu: Oben anfangen lassen */
+  min-height: 100%;
+}  .cal-layout{grid-template-columns:1fr}
+  .mobile-nav{
+    display:flex;position:fixed;bottom:0;left:0;right:0;z-index:100;
+    background:rgba(15,21,36,0.9);backdrop-filter:blur(18px);border-top:1px solid var(--border);
+    padding:10px 8px calc(10px + env(safe-area-inset-bottom));justify-content:space-around;
+  }
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="var(--primary)"/>
+      <stop offset="100%" stop-color="var(--secondary)"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<div class="app-shell">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark"><span class="icon" id="brandIcon"></span></div>
+      <div>
+        <div class="brand-name">Momentum</div>
+        <div class="brand-sub">Ziele. Gewohnheiten. Fortschritt.</div>
+      </div>
+    </div>
+    <button class="nav-item active" data-view="dashboard"><span class="icon" data-icon="home"></span>Dashboard</button>
+    <button class="nav-item" data-view="calendar"><span class="icon" data-icon="calendar"></span>Kalender</button>
+    <button class="nav-item" data-view="stats"><span class="icon" data-icon="chart"></span>Statistik</button>
+    <button class="nav-item" data-view="shop"><span class="icon" data-icon="sparkle"></span>Shop & Pass</button>
+    <button class="nav-item" data-view="settings"><span class="icon" data-icon="settings"></span>Einstellungen</button>
+    <div class="nav-spacer"></div>
+    <div class="sidebar-footer">
+      <div class="streak-pill">
+        <span class="icon" data-icon="flame"></span>
+        <span id="sidebarStreak">0 Tage</span>
+        <span class="icon shield-icon hidden" id="sidebarShieldIcon" title="Streak-Schild aktiv!" data-icon="shield"></span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <div class="topbar">
+      <div class="search-wrap">
+        <span class="icon" data-icon="search"></span>
+        <input class="search-input" id="searchInput" type="text" placeholder="Aufgaben durchsuchen…">
+      </div>
+      <select class="filter-select" id="categoryFilter">
+        <option value="all">Alle Kategorien</option>
+      </select>
+      <div class="topbar-spacer"></div>
+      
+      <!-- User Title Badge -->
+      <div class="user-title hidden" id="topbarTitle"></div>
+      
+      <button class="icon-btn" id="themeToggleBtn" title="Hell/Dunkel"><span class="icon" data-icon="sun"></span></button>
+      <button class="btn-primary" id="newGoalBtn"><span class="icon" data-icon="plus"></span>Neues Ziel</button>
+    </div>
+
+    <!-- DASHBOARD -->
+    <section class="view" id="view-dashboard">
+      <div class="hero-card glass">
+        <div>
+          <div class="hero-greeting" id="greetingText">Guten Tag!</div>
+          <div class="hero-date" id="dateText"></div>
+          <div class="hero-quote" id="quoteText"></div>
+          <div class="hero-stats">
+            <div class="hero-stat"><div class="num" id="statDone">0</div><div class="lbl">Erledigt heute</div></div>
+            <div class="hero-stat streak"><div class="num" id="statStreak">0</div><div class="lbl">Aktuelle Streak</div></div>
+            <div class="hero-stat xp"><div class="num" id="statXpToday">0</div><div class="lbl">XP heute</div></div>
+          </div>
+        </div>
+        <div class="ring-wrap" title="Der Fortschritt füllt sich basierend auf der Schwierigkeit (XP) deiner Ziele!">
+          <svg viewBox="0 0 160 160">
+            <circle class="ring-bg" cx="80" cy="80" r="68"/>
+            <circle class="ring-fg" id="progressRing" cx="80" cy="80" r="68" stroke-dasharray="427" stroke-dashoffset="427"/>
+          </svg>
+          <div class="ring-center">
+            <div class="ring-pct" id="ringPct">0%</div>
+            <div class="ring-sub">Tages-Gewicht</div>
+          </div>
+          <div class="ring-level" id="levelBadge">Level 1</div>
+        </div>
+      </div>
+
+      <div class="section-head">
+        <div class="section-title">Heutige Ziele <span class="count-badge" id="todayCount">0</span></div>
+      </div>
+      <div class="task-grid" id="todayTaskGrid"></div>
+    </section>
+
+    <!-- CALENDAR (Read-Only Summary) -->
+    <section class="view" id="view-calendar" hidden>
+      <div class="cal-layout">
+        <div class="cal-card glass">
+          <div class="cal-head">
+            <div class="cal-title" id="calMonthLabel"></div>
+            <div class="cal-nav">
+              <button class="icon-btn" id="calPrevBtn"><span class="icon" data-icon="chevronLeft"></span></button>
+              <button class="icon-btn" id="calTodayBtn" title="Heute"><span class="icon" data-icon="target"></span></button>
+              <button class="icon-btn" id="calNextBtn"><span class="icon" data-icon="chevronRight"></span></button>
+            </div>
+          </div>
+          <div class="cal-grid" id="calDowRow"></div>
+          <div class="cal-grid" id="calGrid" style="margin-top:6px"></div>
+          <div class="cal-legend">
+            <span><i class="legend-dot" style="background:var(--success)"></i>Alles erledigt</span>
+            <span><i class="legend-dot" style="background:var(--warning)"></i>Teilweise erledigt</span>
+            <span><i class="legend-dot" style="background:var(--text-faint)"></i>Offen</span>
+          </div>
+        </div>
+        
+        <!-- Read-Only Day Summary -->
+        <div class="cal-card glass">
+          <div class="day-panel-head">
+            <div>
+              <div class="day-panel-title" id="dayPanelTitle">Heute</div>
+              <div class="day-panel-sub" id="dayPanelSub">Tageszusammenfassung</div>
+            </div>
+          </div>
+          <div class="day-summary-list" id="daySummaryList"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STATS -->
+    <section class="view" id="view-stats" hidden>
+      <div class="stats-grid" id="statsGrid"></div>
+
+      <!-- Neue Statistiken -->
+      <div class="stats-grid" id="advStatsGrid">
+        <div class="stat-card glass">
+          <div class="lbl">Häufigste Kategorie</div>
+          <div class="num" id="statTopCat" style="font-size:20px; margin-top:8px;">-</div>
+        </div>
+        <div class="stat-card glass">
+          <div class="lbl">Produktivster Wochentag</div>
+          <div class="num" id="statTopDay" style="font-size:20px; margin-top:8px;">-</div>
+        </div>
+        <div class="stat-card glass">
+          <div class="lbl">Höchste XP-Woche</div>
+          <div class="num" id="statBestWeek" style="font-size:20px; margin-top:8px; color:var(--primary)">0 XP</div>
+        </div>
+      </div>
+
+      <div class="chart-card glass">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+          <div class="section-title" style="margin:0">Fortschritt</div>
+          <div class="chart-tabs">
+            <button class="chart-tab active" data-range="week">Woche</button>
+            <button class="chart-tab" data-range="month">Monat</button>
+            <button class="chart-tab" data-range="year">Jahr</button>
+          </div>
+        </div>
+        <div class="chart-svg-wrap"><svg id="lineChart" width="100%" height="220" viewBox="0 0 800 220" preserveAspectRatio="none"></svg></div>
+      </div>
+
+      <div class="chart-card glass">
+        <div class="section-title" style="margin:0 0 14px">Aktivitäts-Heatmap</div>
+        <div class="heatmap-scroll"><div class="heatmap-grid" id="heatmapGrid"></div></div>
+      </div>
+
+      <div class="section-head"><div class="section-title">Achievements</div></div>
+      <div class="badges-grid" id="badgesGrid"></div>
+    </section>
+
+    <!-- SHOP & PASS -->
+    <section class="view" id="view-shop" hidden>
+      <div class="season-banner">
+        <div class="season-header">
+          <div>
+            <div class="season-title" id="seasonTitle">Saison Pass</div>
+            <div style="font-size: 13px; opacity: 0.8; margin-top: 4px;">Schalte jeden Monat exklusive Kosmetika frei!</div>
+          </div>
+          <div class="season-xp" id="seasonXpDisplay">0 / 2000 XP</div>
+        </div>
+        <div class="season-track" id="seasonTrack"></div>
+      </div>
+
+<div class="section-head"><div class="section-title">XP Shop</div></div>
+
+<div class="stats-grid" style="margin-bottom:18px">
+  <div class="stat-card glass">
+    <div class="lbl">So bekommst du Achievements</div>
+    <div class="num" style="font-size:16px;margin-top:8px">Erledige Aufgaben, halte Streaks, meistere Gewohnheiten, sammle XP und probiere verschiedene Kategorien.</div>
+  </div>
+  <div class="stat-card glass">
+    <div class="lbl">So kaufst du Shop-Sachen</div>
+    <div class="num" style="font-size:16px;margin-top:8px">Du brauchst genug Shop-XP. Manche Dinge brauchen zusätzlich ein Mindestlevel.</div>
+  </div>
+  <div class="stat-card glass">
+    <div class="lbl">Habit-Schutz</div>
+    <div class="num" style="font-size:16px;margin-top:8px">Wenn du einen Habit-Tag verpasst, verbraucht die App automatisch 1 Habit-Schutz und rettet deine Gewohnheit.</div>
+  </div>
+</div>
+
+<div style="margin-bottom: 16px; font-weight: 600; color: var(--secondary)">
+  Verfügbare XP: <span id="shopAvailableXp">0</span> · 
+  Streak-Schilde: <span id="ownedShields">0</span> · 
+  Habit-Schutz: <span id="ownedHabitShields">0</span>
+</div>
+
+<div class="shop-grid" id="shopGrid"></div>
+        <!-- Streak Shield -->
+        <div class="shop-item glass">
+          <div class="shop-icon">🛡️</div>
+          <div class="shop-title">Streak-Schild</div>
+          <div class="shop-desc">Speichert deine Streak automatisch, falls du mal einen Tag vergisst.</div>
+          <div class="shop-price">300 XP</div>
+          <button class="btn-primary" onclick="buyShield()">Kaufen</button>
+          <div style="margin-top:10px; font-size:11px; color:var(--text-faint)">Im Besitz: <span id="ownedShields">0</span></div>
+        </div>
+
+        <!-- Titel 1 -->
+        <div class="shop-item glass" id="shopItemT1">
+          <div class="shop-icon">🧘</div>
+          <div class="shop-title">Zen-Mönch</div>
+          <div class="shop-desc">Exklusiver Titel für dein Profil. (Benötigt Level 5)</div>
+          <div class="shop-price">500 XP</div>
+          <button class="btn-primary" onclick="buyTitle('Zen-Mönch', 5, 500)">Kaufen</button>
+        </div>
+
+        <!-- Titel 2 -->
+        <div class="shop-item glass" id="shopItemT2">
+          <div class="shop-icon">⚡</div>
+          <div class="shop-title">Fokusmeister</div>
+          <div class="shop-desc">Exklusiver Titel für dein Profil. (Benötigt Level 10)</div>
+          <div class="shop-price">1200 XP</div>
+          <button class="btn-primary" onclick="buyTitle('Fokusmeister', 10, 1200)">Kaufen</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section class="view" id="view-settings" hidden>
+      <div class="settings-grid">
+        <div class="settings-card glass">
+          <h3><span class="icon" data-icon="palette"></span>Design</h3>
+          <div class="setting-row">
+            <div><div class="lbl">Akzentfarbe</div><div class="desc">Primärfarbe der App anpassen</div></div>
+            <div class="swatches" id="accentSwatches"></div>
+          </div>
+          <div class="setting-row">
+            <div><div class="lbl">Heller Modus</div><div class="desc">Zwischen Dark &amp; Light wechseln</div></div>
+            <button class="toggle" id="lightModeToggle"></button>
+          </div>
+        </div>
+
+        <div class="settings-card glass">
+          <h3><span class="icon" data-icon="globe"></span>Allgemein</h3>
+          <div class="setting-row">
+            <div><div class="lbl">Tägliche Zurücksetzung</div><div class="desc">Wann beginnt ein neuer Tag?</div></div>
+            <select class="select-mini" id="resetHourSelect">
+              <option value="0">00:00 Uhr</option>
+              <option value="3">03:00 Uhr</option>
+              <option value="6">06:00 Uhr</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="settings-card glass">
+          <h3><span class="icon" data-icon="database"></span>Daten & System</h3>
+          <div class="setting-row">
+            <div><div class="lbl">Daten exportieren</div><div class="desc">Backup als JSON-Datei speichern</div></div>
+            <button class="btn-secondary" id="exportBtn">Export</button>
+          </div>
+          <div class="setting-row">
+            <div><div class="lbl">Daten importieren</div><div class="desc">Backup aus JSON-Datei laden</div></div>
+            <button class="btn-secondary" id="importBtn">Import</button>
+            <input type="file" id="importFile" accept=".json" class="hidden">
+          </div>
+          <div class="setting-row">
+            <div><div class="lbl">Alle Daten löschen</div><div class="desc">Kompletter Reset — nicht widerrufbar</div></div>
+            <button class="btn-danger" id="resetBtn">Löschen</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- AI ASSISTANT -->
+<button class="ai-fab" id="aiFab" title="KI Assistent">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10H12V2z"/><path d="M12 12 2.1 14.8a10 10 0 0 1 9.9-12.8V12z"/></svg>
+</button>
+
+<div class="ai-chat-window glass" id="aiChatWindow">
+  <div class="ai-chat-header">
+    <div class="ai-chat-title"><span style="font-size:20px">🤖</span> Momentum AI</div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <span class="ai-status local" id="aiStatus">Lokal</span>
+      <button class="icon-btn" id="aiCloseBtn" style="width:30px;height:30px"><span class="icon" data-icon="x"></span></button>
+    </div>
+  </div>
+  
+  <div class="ai-chat-body" id="aiChatBody">
+    <div class="ai-msg bot">Hallo! Ich bin dein Produktivitäts-Assistent.
+Ich helfe dir bei Motivation, Tagesplanung, Wetter in Chemnitz, Fokus, Prioritäten und konkreten Tipps zu deinen aktuellen Zielen.</div>
+  </div>
+
+  <div class="ai-quick-actions">
+    <button class="ai-chip" onclick="sendAiMsg('Plan meinen Tag')">Plan meinen Tag</button>
+    <button class="ai-chip" onclick="sendAiMsg('Welche Aufgabe jetzt?')">Welche Aufgabe jetzt?</button>
+    <button class="ai-chip" onclick="sendAiMsg('Soll ich jetzt lernen oder Sport machen?')">Lernen oder Sport?</button>
+    <button class="ai-chip" onclick="sendAiMsg('Motiviere mich')">Motiviere mich</button>
+    <button class="ai-chip" onclick="sendAiMsg('Gib mir Tipps für Fokus')">Fokus-Tipps</button>
+    <button class="ai-chip" onclick="sendAiMsg('Wetter-Check')">Wetter in Chemnitz?</button>
+    <button class="ai-chip" onclick="sendAiMsg('Wie ist meine Streak?')">Meine Streak?</button>
+  </div>
+
+  <div class="ai-chat-input">
+    <input type="text" id="aiInput" placeholder="Frag nach Planung, Motivation, Wetter oder Tipps..." autocomplete="off">
+    <button id="aiSendBtn"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></button>
+  </div>
+</div>
+
+<!-- GOAL MODAL -->
+<div class="modal-overlay" id="goalModalOverlay">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 id="goalModalTitle">Neues Ziel</h2>
+      <button class="icon-btn" id="goalModalClose"><span class="icon" data-icon="x"></span></button>
+    </div>
+    <div class="modal-body">
+      <div class="field">
+        <label>Titel</label>
+        <input type="text" id="fTitle" placeholder="z. B. 30 Minuten laufen" maxlength="60">
+      </div>
+      <div class="field">
+        <label>Beschreibung</label>
+        <textarea id="fDesc" placeholder="Kurze Beschreibung (optional)" maxlength="200"></textarea>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Kategorie</label><select id="fCategory"></select></div>
+        <div class="field">
+          <label>Priorität</label>
+          <select id="fPriority"><option value="niedrig">Niedrig</option><option value="mittel" selected>Mittel</option><option value="hoch">Hoch</option></select>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Schwierigkeit</label>
+          <select id="fDifficulty"><option value="leicht">🟢 Leicht</option><option value="mittel" selected>🟡 Mittel</option><option value="schwer">🟠 Schwer</option><option value="episch">🔴 Episch</option></select>
+        </div>
+        <div class="field"><label>Geschätzte Dauer (Min.)</label><input type="number" id="fDuration" min="1" max="480" step="5" value="30"></div>
+      </div>
+      <div class="field">
+        <label>XP-Belohnung <span style="color:var(--text-faint);font-weight:500;font-size:11px">— automatisch nach Schwierigkeit, anpassbar</span></label>
+        <input type="number" id="fXp" min="5" max="500" step="5" value="25">
+      </div>
+      <div class="field"><label>Icon</label><div class="emoji-picker" id="emojiPicker"></div></div>
+      <div class="field">
+        <label>Wiederholung</label>
+        <div class="chip-group" id="repeatTypeGroup">
+          <button class="chip active" data-repeat="once">Nur heute</button>
+          <button class="chip" data-repeat="daily">Jeden Tag</button>
+          <button class="chip" data-repeat="weekdays">Wochentage</button>
+          <button class="chip" data-repeat="weekly">X mal / Woche</button>
+          <button class="chip" data-repeat="interval">Alle X Tage</button>
+        </div>
+      </div>
+      <div class="field hidden" id="weekdayField"><label>Wochentage</label><div class="weekday-picker" id="weekdayPicker"></div></div>
+      <div class="field hidden" id="weeklyField"><label>Wie oft pro Woche?</label><input type="number" id="fWeeklyCount" min="1" max="7" value="2"></div>
+      <div class="field hidden" id="dateField"><label>Datum</label><input type="date" id="fDate"></div>
+      <div class="field hidden" id="intervalField"><label>Alle wie viele Tage?</label><input type="number" id="fInterval" min="2" max="90" value="2"></div>
+      
+      <div class="field">
+        <label>Sidequests / Unteraufgaben (optional)</label>
+        <div class="subquest-editor-row">
+          <input type="text" id="fSubquestInput" placeholder="Unteraufgabe hinzufügen…" maxlength="60">
+          <button type="button" class="btn-secondary" id="addSubquestBtn">+</button>
+        </div>
+        <div class="subquest-editor-list" id="subquestEditorList"></div>
+      </div>
+
+      <div class="field" style="border-top:1px solid var(--border);padding-top:16px;margin-top:2px">
+        <div class="setting-row" style="padding:0;border:none">
+          <div>
+            <div class="lbl">🌱 Zur Gewohnheit machen</div>
+            <div class="desc">Verschwindet automatisch nach X Tagen. Gibt ein Achievement.</div>
+          </div>
+          <button type="button" class="toggle" id="habitToggle"></button>
+        </div>
+      </div>
+      <div class="field hidden" id="habitDaysField"><label>Dauer (Tage)</label><input type="number" id="fHabitDays" min="7" max="365" value="70"></div>
+
+    </div>
+    <div class="modal-foot">
+      <button class="btn-secondary" id="goalCancelBtn">Abbrechen</button>
+      <button class="btn-primary" id="goalSaveBtn"><span class="icon" data-icon="check"></span>Speichern</button>
+    </div>
+  </div>
+</div>
+
+<!-- DATE MODAL -->
+<div class="modal-overlay" id="dateModalOverlay">
+  <div class="modal" style="max-width:360px">
+    <div class="modal-head"><h2 id="dateModalTitle">Zieltag wählen</h2><button class="icon-btn" id="dateModalClose"><span class="icon" data-icon="x"></span></button></div>
+    <div class="modal-body"><div class="field"><label>Datum</label><input type="date" id="targetDateInput"></div></div>
+    <div class="modal-foot"><button class="btn-secondary" id="dateCancelBtn">Abbrechen</button><button class="btn-primary" id="dateConfirmBtn">Bestätigen</button></div>
+  </div>
+</div>
+
+<!-- CONFIRM MODAL -->
+<div class="modal-overlay" id="confirmModalOverlay">
+  <div class="modal" style="max-width:400px">
+    <div class="modal-head"><h2 id="confirmTitle">Bist du sicher?</h2></div>
+    <div class="modal-body"><p id="confirmText" style="color:var(--text-dim);font-size:14px"></p></div>
+    <div class="modal-foot"><button class="btn-secondary" id="confirmCancelBtn">Abbrechen</button><button class="btn-danger" id="confirmOkBtn">Bestätigen</button></div>
+  </div>
+</div>
+
+<div class="toast-stack" id="toastStack"></div>
+<div class="achv-popup" id="achvPopup">
+  <span class="emoji" id="achvEmoji">🏆</span>
+  <div><div class="t1">Achievement freigeschaltet</div><div class="t2" id="achvName"></div></div>
+</div>
+<canvas id="confettiCanvas"></canvas>
+<!-- DAS HIER STATTDESSEN EINFÜGEN: -->
+<script type="module" src="script.js"></script>
+</body>
+</html>

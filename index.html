@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Momentum — Login</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Inter+Tight:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   MOMENTUM LOGIN — Premium Look
+   ============================================================ */
+:root{
+  --bg:#0B0F19;
+  --card:#141B2D;
+  --card-2:#1A2338;
+  --border:rgba(255,255,255,0.07);
+  --primary:#5B8CFF;
+  --primary-rgb:91,140,255;
+  --secondary:#7C4DFF;
+  --secondary-rgb:124,77,255;
+  --error:#EF4444;
+  --error-rgb:239,68,68;
+  --text:#F3F5FA;
+  --text-dim:#9AA4BD;
+  --text-faint:#5D6789;
+  --radius-lg:24px;
+  --shadow-lift:0 20px 60px -16px rgba(0,0,0,0.65);
+  --ease:cubic-bezier(.16,1,.3,1);
+  --font:'Inter',sans-serif;
+  --font-display:'Inter Tight',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:var(--font);
+  background:
+    radial-gradient(1200px 600px at 85% -10%, rgba(var(--secondary-rgb),0.18), transparent 60%),
+    radial-gradient(1000px 700px at -10% 10%, rgba(var(--primary-rgb),0.16), transparent 55%),
+    var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  display:flex;align-items:center;justify-content:center;
+  padding:24px;
+}
+.auth-overlay{ width:100%;max-width:420px;display:flex;align-items:center;justify-content:center; }
+.auth-card{
+  width:100%;
+  background:linear-gradient(155deg, var(--card), var(--card-2));
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  box-shadow:var(--shadow-lift);
+  padding:38px 34px;
+  position:relative;overflow:hidden;
+  animation:authIn .55s var(--ease);
+}
+.auth-card::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(500px 260px at 100% 0%, rgba(var(--secondary-rgb),0.14), transparent 60%);
+  pointer-events:none;
+}
+@keyframes authIn{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}
+.auth-brand{ display:flex;align-items:center;gap:14px;margin-bottom:28px;position:relative;z-index:1; }
+.auth-brand-mark{
+  width:46px;height:46px;border-radius:14px;
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 10px 26px -8px rgba(var(--primary-rgb),0.6);
+  flex-shrink:0;
+}
+.auth-brand-mark svg{width:24px;height:24px;color:#fff}
+.auth-brand-title{font-family:var(--font-display);font-weight:800;font-size:22px;letter-spacing:-0.02em}
+.auth-brand-sub{font-size:12.5px;color:var(--text-faint);margin-top:2px}
+.auth-card h1{font-family:var(--font-display);font-size:22px;font-weight:800;margin-bottom:6px;position:relative;z-index:1;}
+.auth-card p.lead{color:var(--text-dim);font-size:14px;margin-bottom:24px;position:relative;z-index:1;}
+.auth-error{
+  display:none;align-items:center;gap:8px;
+  color:#FF8181;background:rgba(var(--error-rgb),0.12);
+  border:1px solid rgba(var(--error-rgb),0.25);
+  border-radius:12px;padding:11px 14px;font-size:13px;font-weight:600;margin-bottom:16px;
+}
+.auth-error.visible{display:flex}
+.auth-error svg{width:16px;height:16px;color:var(--error);flex-shrink:0}
+.auth-field{position:relative;margin-bottom:14px;z-index:1;}
+.auth-field label{display:block;font-size:11.5px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:.04em;margin-bottom:7px;}
+.auth-field input{
+  width:100%;padding:13px 15px 13px 44px;border-radius:14px;
+  background:var(--card);border:1px solid var(--border);
+  color:var(--text);font-size:15px;outline:none;transition:all .2s var(--ease);
+  font-family:inherit;
+}
+.auth-field input:focus{border-color:rgba(var(--primary-rgb),0.55);box-shadow:0 0 0 4px rgba(var(--primary-rgb),0.12);}
+.auth-field svg.icon{position:absolute;left:15px;bottom:13px;width:18px;height:18px;color:var(--text-faint);pointer-events:none;}
+.auth-options{display:flex;align-items:center;justify-content:space-between;margin:18px 0 22px;font-size:12.5px;color:var(--text-dim);position:relative;z-index:1;}
+.auth-remember{display:flex;align-items:center;gap:8px;cursor:pointer;}
+.auth-remember input[type=checkbox]{width:16px;height:16px;accent-color:var(--primary);}
+.auth-btn{
+  width:100%;padding:14px 20px;border-radius:14px;font-weight:800;font-size:15px;
+  background:linear-gradient(135deg,var(--primary),var(--secondary));color:#fff;
+  border:none;cursor:pointer;font-family:inherit;
+  box-shadow:0 12px 30px -10px rgba(var(--primary-rgb),0.55);
+  transition:transform .2s var(--ease),box-shadow .2s var(--ease);
+  position:relative;z-index:1;
+}
+.auth-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 18px 36px -10px rgba(var(--primary-rgb),0.65)}
+.auth-btn:active:not(:disabled){transform:translateY(0)}
+.auth-btn.loading{opacity:0.8;cursor:wait;}
+.auth-btn.loading::after{
+  content:"";display:inline-block;width:18px;height:18px;margin-left:8px;
+  border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;
+  animation:spin 0.7s linear infinite;vertical-align:middle;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.auth-footer{text-align:center;margin-top:22px;font-size:12px;color:var(--text-faint);position:relative;z-index:1;}
+.auth-lock-info{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:34px;font-size:11.5px;color:var(--text-faint);}
+.auth-lock-info svg{width:14px;height:14px;color:var(--text-faint);}
+@media(max-width:480px){ body{padding:16px} .auth-card{padding:28px 22px} }
+</style>
+</head>
+<body>
+
+<div class="auth-overlay">
+  <div class="auth-card" id="loginCard">
+    <div class="auth-brand">
+      <div class="auth-brand-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z"/></svg>
+      </div>
+      <div>
+        <div class="auth-brand-title">Momentum</div>
+        <div class="auth-brand-sub">Ziele. Gewohnheiten. Fortschritt.</div>
+      </div>
+    </div>
+
+    <h1>Willkommen zurück</h1>
+    <p class="lead">Gib deine Zugangsdaten ein, um fortzufahren.</p>
+
+    <div class="auth-error" id="authError">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <span>E-Mail oder Passwort ist falsch.</span>
+    </div>
+
+    <div class="auth-field">
+      <label for="authEmail">E-Mail</label>
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      <input type="email" id="authEmail" placeholder="name@beispiel.de" autocomplete="email">
+    </div>
+
+    <div class="auth-field">
+      <label for="authPassword">Passwort</label>
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      <input type="password" id="authPassword" placeholder="••••••••" autocomplete="current-password">
+    </div>
+
+    <div class="auth-options">
+      <label class="auth-remember">
+        <input type="checkbox" id="authRemember">
+        <span>Angemeldet bleiben</span>
+      </label>
+    </div>
+
+    <button class="auth-btn" id="authLoginBtn">Anmelden →</button>
+
+    <div class="auth-footer">Zugriff nur für autorisierte Nutzer.</div>
+    <div class="auth-lock-info">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      Diese Seite ist passwortgeschützt.
+    </div>
+  </div>
+</div>
+
+<script>
+const loginBtn    = document.getElementById("authLoginBtn");
+const emailInput  = document.getElementById("authEmail");
+const passwordInput = document.getElementById("authPassword");
+const errorBox    = document.getElementById("authError");
+
+loginBtn.addEventListener("click", async () => {
+  errorBox.classList.remove("visible");
+  loginBtn.classList.add("loading");
+  loginBtn.disabled = true;
+  loginBtn.textContent = "Prüfe...";
+
+  try {
+    const response = await fetch("/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: emailInput.value,
+        password: passwordInput.value
+      })
+    });
+
+    if (response.ok) {
+      window.location.href = "dashboard.html";
+    } else {
+      errorBox.classList.add("visible");
+      passwordInput.value = "";
+      passwordInput.focus();
+      shakeCard();
+    }
+  } catch (error) {
+    console.error("Login Fehler:", error);
+    errorBox.querySelector("span").textContent = "Verbindungsfehler. Bitte versuche es erneut.";
+    errorBox.classList.add("visible");
+  } finally {
+    loginBtn.classList.remove("loading");
+    loginBtn.disabled = false;
+    loginBtn.textContent = "Anmelden →";
+  }
+});
+
+passwordInput.addEventListener("keydown", e => { if(e.key === "Enter") loginBtn.click(); });
+emailInput.addEventListener("keydown", e => { if(e.key === "Enter") passwordInput.focus(); });
+
+function shakeCard(){
+  const card = document.getElementById("loginCard");
+  card.style.animation = "none";
+  setTimeout(() => { card.style.animation = "shake 0.45s ease"; }, 10);
+}
+
+const style = document.createElement("style");
+style.textContent = `@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}`;
+document.head.appendChild(style);
+
+window.addEventListener("load", () => emailInput.focus());
+</script>
+
+</body>
+</html>
