@@ -66,8 +66,6 @@ async function saveState(){
 // 3. Globaler State
 let state = loadState();
 
-let state = loadState();
-
 async function loadStateFromSupabase(){
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return;
