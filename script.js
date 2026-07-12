@@ -94,43 +94,6 @@ async function loadStateFromSupabase(){
   }
 }
 loadStateFromSupabase();
-
-window.currentWisdom = null;
-
-async function loadWisdom(){
-  try{
-    const cached = JSON.parse(localStorage.getItem('m_wisdom') || 'null');
-    const nowSlot = Math.floor(Date.now() / (6*3600*1000));
-    if(cached && cached.slot === nowSlot){
-      window.currentWisdom = cached;
-    } else {
-      const res = await fetch('/dailyWisdom');
-      const data = await res.json();
-      localStorage.setItem('m_wisdom', JSON.stringify(data));
-      window.currentWisdom = data;
-    }
-  } catch(e){
-    window.currentWisdom = {
-      type:'hadith', ar:'إِنَّمَا الْأَعْمَالُ بِالنِّيَّاتِ',
-      text:'Handlungen werden allein nach ihren Absichten bewertet.',
-      ref:'Überliefert bei Bukhari und Muslim'
-    };
-  }
-  if (typeof renderDashboard === 'function') renderDashboard();
-}
-loadWisdom();
-
-// 4. TEST-BLOCK (hier ist er sicher platziert)
-async function testConnection() {
-    const { data, error } = await supabase.from('daten').select('*').limit(1);
-    if (error) {
-        console.error("Verbindung fehlgeschlagen:", error.message);
-    } else {
-        console.log("Verbindung steht! Supabase ist bereit.");
-    }
-}
-testConnection();
-
 // 5. Restlicher Code
 
     console.log("Das Theme ist:", state.settings.theme); 
@@ -168,6 +131,41 @@ const EMOJIS = ['💪','🏃','🧘','📚','✍️','💻','💼','📈','🎯'
 const GOAL_COLORS = ['#5B8CFF','#7C4DFF','#22C55E','#F59E0B','#EF4444','#EC4899'];
 const DIFFICULTY_XP = {leicht:10, mittel:25, schwer:50, episch:100};
 const DIFFICULTY_LABELS = {leicht:'🟢 Leicht', mittel:'🟡 Mittel', schwer:'🟠 Schwer', episch:'🔴 Episch'};
+window.currentWisdom = null;
+
+async function loadWisdom(){
+  try{
+    const cached = JSON.parse(localStorage.getItem('m_wisdom') || 'null');
+    const nowSlot = Math.floor(Date.now() / (6*3600*1000));
+    if(cached && cached.slot === nowSlot){
+      window.currentWisdom = cached;
+    } else {
+      const res = await fetch('/dailyWisdom');
+      const data = await res.json();
+      localStorage.setItem('m_wisdom', JSON.stringify(data));
+      window.currentWisdom = data;
+    }
+  } catch(e){
+    window.currentWisdom = {
+      type:'hadith', ar:'إِنَّمَا الْأَعْمَالُ بِالنِّيَّاتِ',
+      text:'Handlungen werden allein nach ihren Absichten bewertet.',
+      ref:'Überliefert bei Bukhari und Muslim'
+    };
+  }
+  if (typeof renderDashboard === 'function') renderDashboard();
+}
+loadWisdom();
+
+// 4. TEST-BLOCK (hier ist er sicher platziert)
+async function testConnection() {
+    const { data, error } = await supabase.from('daten').select('*').limit(1);
+    if (error) {
+        console.error("Verbindung fehlgeschlagen:", error.message);
+    } else {
+        console.log("Verbindung steht! Supabase ist bereit.");
+    }
+}
+testConnection();
 const WEEKDAY_LABELS = ['So','Mo','Di','Mi','Do','Fr','Sa'];
 
 
