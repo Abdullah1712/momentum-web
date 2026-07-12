@@ -1357,6 +1357,10 @@ function updateToggleButtons() {
         themeToggleBtn.title = isLight ? "Dunkler Modus" : "Heller Modus";
     }
 }
+document.getElementById('logoutBtn')?.addEventListener('click', async () => {
+  await supabase.auth.signOut();
+  window.location.href = 'index.html';
+});
 
 // Event-Listener setzen
 if (themeToggleBtn) themeToggleBtn.addEventListener('click', toggleTheme);
