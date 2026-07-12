@@ -794,18 +794,31 @@ a{color:inherit;text-decoration:none;}
   .hero-stats{ order:5; }
 
   .topbar{ flex-wrap:nowrap; }
-  .search-wrap{ order:1; flex:1; min-width:0; }
-  #themeToggleBtn{ order:2; }
-  #newGoalBtn{ order:3; padding:11px 14px; }
+  #newGoalBtn{ padding:11px 14px; }
   #newGoalBtn .btn-text{ display:none; }
-  .topbar-spacer{ display:none; }
-  .user-title{ order:4; }
   .filter-select{
-    order:5;
     max-width:90px;
     font-size:11px;
     padding:6px 8px;
-    margin-left:6px;
+  }
+
+  .search-wrap{
+    flex:0 0 auto;
+    width:38px;
+    overflow:hidden;
+    transition:width .25s var(--ease);
+    min-width:0;
+  }
+  .search-wrap.expanded{
+    flex:1;
+    width:auto;
+  }
+  .search-wrap .search-input{
+    opacity:0;
+    transition:opacity .2s var(--ease);
+  }
+  .search-wrap.expanded .search-input{
+    opacity:1;
   }
 
   .shop-grid{ gap:14px; }

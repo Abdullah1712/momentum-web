@@ -1351,6 +1351,25 @@ document.querySelectorAll('.sidebar .nav-item').forEach(btn=>{
     sidebarBackdrop.classList.remove('show');
   });
 });
+const searchWrap = document.querySelector('.search-wrap');
+const searchIcon = searchWrap?.querySelector('.icon');
+const searchInput = document.getElementById('searchInput');
+
+searchIcon?.addEventListener('click', () => {
+  if (window.innerWidth <= 600) {
+    searchWrap.classList.toggle('expanded');
+    if (searchWrap.classList.contains('expanded')) {
+      searchInput.focus();
+    }
+  }
+});
+
+document.addEventListener('click', (e) => {
+  if (window.innerWidth <= 600 && searchWrap.classList.contains('expanded') && !searchWrap.contains(e.target)) {
+    searchWrap.classList.remove('expanded');
+  }
+});
+
 // Theme Toggle Logik
 const themeToggleBtn = document.getElementById('themeToggleBtn');
 const lightModeToggle = document.getElementById('lightModeToggle');
