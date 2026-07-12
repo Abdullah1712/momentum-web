@@ -168,61 +168,101 @@ body{
   </div>
 </div>
 
-<script>
-const loginBtn    = document.getElementById("authLoginBtn");
-const emailInput  = document.getElementById("authEmail");
+<script type="module">
+import { supabase } from './supabase.js';
+
+const loginBtn = document.getElementById("authLoginBtn");
+const emailInput = document.getElementById("authEmail");
 const passwordInput = document.getElementById("authPassword");
-const errorBox    = document.getElementById("authError");
+const errorBox = document.getElementById("authError");
+const authTitle = document.querySelector(".auth-card h1");
+const authLead = document.querySelector(".auth-card p.lead");
+const toggleText = document.createElement("div");
+toggleText.className = "auth-footer";
+toggleText.style.marginTop = "14px";
+toggleText.innerHTML = `Noch kein Konto? <a href="#" id="toggleMode" style="color:var(--primary);font-weight:700;text-decoration:none;">Jetzt registrieren</a>`;
+document.querySelector(".auth-footer").insertAdjacentElement("beforebegin", toggleText);
+
+let mode = "login"; // oder "register"
+
+document.getElementById("toggleMode").addEventListener("click", (e) => {
+  e.preventDefault();
+  if (mode === "login") {
+    mode = "register";
+    authTitle.textContent = "Konto erstellen";
+    authLead.textContent = "Registriere dich mit E-Mail und Passwort.";
+    loginBtn.textContent = "Registrieren →";
+    document.getElementById("toggleMode").textContent = "Zurück zum Login";
+    toggleText.querySelector("div") ? null : null;
+    toggleText.firstChild.textContent = "Schon ein Konto? ";
+  } else {
+    mode = "login";
+    authTitle.textContent = "Willkommen zurück";
+    authLead.textContent = "Gib deine Zugangsdaten ein, um fortzufahren.";
+    loginBtn.textContent = "Anmelden →";
+    document.getElementById("toggleMode").textContent = "Jetzt registrieren";
+    toggleText.firstChild.textContent = "Noch kein Konto? ";
+  }
+  errorBox.classList.remove("visible");
+});
 
 loginBtn.addEventListener("click", async () => {
   errorBox.classList.remove("visible");
   loginBtn.classList.add("loading");
   loginBtn.disabled = true;
-  loginBtn.textContent = "Prüfe...";
 
-  try {
-    const response = await fetch("/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        email: emailInput.value,
-        password: passwordInput.value
-      })
-    });
+  const email = emailInput.value.trim();
+  const password = passwordInput.value;
 
-    if (response.ok) {
-      window.location.href = "dashboard.html";
-    } else {
-      errorBox.classList.add("visible");
-      passwordInput.value = "";
-      passwordInput.focus();
-      shakeCard();
-    }
-  } catch (error) {
-    console.error("Login Fehler:", error);
-    errorBox.querySelector("span").textContent = "Verbindungsfehler. Bitte versuche es erneut.";
-    errorBox.classList.add("visible");
-  } finally {
-    loginBtn.classList.remove("loading");
-    loginBtn.disabled = false;
-    loginBtn.textContent = "Anmelden →";
+  if (!email || !password) {
+    showError("Bitte E-Mail und Passwort ausfüllen.");
+    resetButton();
+    return;
   }
+
+  if (mode === "login") {
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) {
+      showError("E-Mail oder Passwort ist falsch.");
+    } else {
+      window.location.href = "dashboard.html";
+      return;
+    }
+  } else {
+    const { data, error } = await supabase.auth.signUp({ email, password });
+    if (error) {
+      showError(error.message.includes("already registered") ? "Diese E-Mail ist bereits registriert." : "Registrierung fehlgeschlagen: " + error.message);
+    } else {
+      window.location.href = "dashboard.html";
+      return;
+    }
+  }
+
+  resetButton();
 });
+
+function showError(msg) {
+  errorBox.querySelector("span").textContent = msg;
+  errorBox.classList.add("visible");
+  passwordInput.value = "";
+  passwordInput.focus();
+}
+
+function resetButton() {
+  loginBtn.classList.remove("loading");
+  loginBtn.disabled = false;
+}
 
 passwordInput.addEventListener("keydown", e => { if(e.key === "Enter") loginBtn.click(); });
 emailInput.addEventListener("keydown", e => { if(e.key === "Enter") passwordInput.focus(); });
 
-function shakeCard(){
-  const card = document.getElementById("loginCard");
-  card.style.animation = "none";
-  setTimeout(() => { card.style.animation = "shake 0.45s ease"; }, 10);
-}
-
-const style = document.createElement("style");
-style.textContent = `@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}`;
-document.head.appendChild(style);
-
 window.addEventListener("load", () => emailInput.focus());
+
+// Falls schon eingeloggt, direkt weiterleiten
+const { data: { session } } = await supabase.auth.getSession();
+if (session) {
+  window.location.href = "dashboard.html";
+}
 </script>
 
 </body>

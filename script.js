@@ -51,11 +51,51 @@ if(!s.shop.habitShieldedMisses) s.shop.habitShieldedMisses = [];    if(!s.overri
     return Object.assign(defaultState(), s);
   }catch(e){ return defaultState(); }
 }
-function saveState(){ localStorage.setItem(LS_KEY, JSON.stringify(state)); }
+async function saveState(){
+  localStorage.setItem(LS_KEY, JSON.stringify(state));
 
+  const { data: { user } } = await supabase.auth.getUser();
+  if (user) {
+    const { error } = await supabase
+      .from('daten')
+      .upsert({ user_id: user.id, inhalt: JSON.stringify(state) }, { onConflict: 'user_id' });
+    if (error) console.error("Speichern in Supabase fehlgeschlagen:", error.message);
+  }
+}
 
 // 3. Globaler State
 let state = loadState();
+
+let state = loadState();
+
+async function loadStateFromSupabase(){
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return;
+
+  const { data, error } = await supabase
+    .from('daten')
+    .select('inhalt')
+    .eq('user_id', user.id)
+    .maybeSingle();
+
+  if (error) {
+    console.error("Laden aus Supabase fehlgeschlagen:", error.message);
+    return;
+  }
+
+  if (data && data.inhalt) {
+    try {
+      const remoteState = JSON.parse(data.inhalt);
+      state = Object.assign(defaultState(), remoteState);
+      localStorage.setItem(LS_KEY, JSON.stringify(state));
+      if (typeof renderDashboard === 'function') renderDashboard();
+      if (typeof renderSettings === 'function') renderSettings();
+    } catch(e) {
+      console.error("Fehler beim Parsen der Supabase-Daten:", e);
+    }
+  }
+}
+loadStateFromSupabase();
 
 window.currentWisdom = null;
 

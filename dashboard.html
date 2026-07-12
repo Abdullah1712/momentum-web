@@ -763,6 +763,15 @@ a{color:inherit;text-decoration:none;}
 </style>
 </head>
 <body>
+  
+<script type="module">
+import { supabase } from './supabase.js';
+
+const { data: { session } } = await supabase.auth.getSession();
+if (!session) {
+  window.location.href = "index.html";
+}
+</script>
 
 <svg width="0" height="0" style="position:absolute">
   <defs>
