@@ -154,7 +154,6 @@ async function loadWisdom(){
   }
   if (typeof renderDashboard === 'function') renderDashboard();
 }
-loadWisdom();
 
 // 4. TEST-BLOCK (hier ist er sicher platziert)
 async function testConnection() {
@@ -165,7 +164,7 @@ async function testConnection() {
         console.log("Verbindung steht! Supabase ist bereit.");
     }
 }
-testConnection();
+
 const WEEKDAY_LABELS = ['So','Mo','Di','Mi','Do','Fr','Sa'];
 
 
@@ -1330,6 +1329,8 @@ function init(){
 }
 
 init();
+loadWisdom()
+testConnection()
 // Theme Toggle Logik
 const themeToggleBtn = document.getElementById('themeToggleBtn');
 const lightModeToggle = document.getElementById('lightModeToggle');
