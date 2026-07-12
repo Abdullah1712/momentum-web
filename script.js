@@ -183,7 +183,8 @@ function defaultState(){
     unlockedAchievements: [], habitsCompleted: 0, completedCategories: [], subquestCompletions: {},
     shop: { shields: 0, habitShields: 0, ownedTitles: [], shieldedDays: [], habitShieldedMisses: [] },
     settings: { accent: '#5B8CFF', theme: 'dark', resetHour: 0 },
-    equipped: { title: null }
+    equipped: { title: null },
+    season: { xp: 0 }
   };
 }
 
@@ -492,18 +493,8 @@ function toggleTaskDone(dateStr, goalId, cardElement){
   const newDone = !(state.completions[dateStr][goalId]?.done);
   state.completions[dateStr][goalId] = {done:newDone, xp:goal.xp};
   
-  if(newDone){
-    state.totalXp += goal.xp; state.availableXp += goal.xp;
-    function defaultState(){
-  return {
-    goals: [], completions: {}, overrides: {}, dayOrder: {}, totalXp: 0, availableXp: 0,
-    unlockedAchievements: [], habitsCompleted: 0, completedCategories: [], subquestCompletions: {},
-    shop: { shields: 0, habitShields: 0, ownedTitles: [], shieldedDays: [], habitShieldedMisses: [] },
-    settings: { accent: '#5B8CFF', theme: 'dark', resetHour: 0 },
-    equipped: { title: null },
-    season: { xp: 0 }
-  };
-}
+if(newDone){
+    state.totalXp += goal.xp; state.availableXp += goal.xp; state.season.xp += goal.xp;
     if(!state.completedCategories.includes(goal.category)) state.completedCategories.push(goal.category);
     fireCardConfetti(cardElement);
   } else {
@@ -685,37 +676,40 @@ function renderHeatmap(){
 
 /* SHOP & SEASON PASS */
 const SHOP_ITEMS = [
-  {id:'streak_shield', type:'consumable', icon:'🛡️', title:'Streak-Schild', desc:'Rettet deine normale Tages-Streak bei einem verpassten Tag.', price:300, levelReq:1, key:'shields', amount:1},
-  {id:'habit_guard', type:'consumable', icon:'🌱', title:'Habit-Schutz', desc:'Rettet eine Gewohnheit, wenn du einen Habit-Tag verpasst.', price:450, levelReq:3, key:'habitShields', amount:1},
-  {id:'streak_pack', type:'consumable', icon:'📦', title:'Streak-Schild Pack', desc:'3 Streak-Schilde auf einmal.', price:800, levelReq:6, key:'shields', amount:3},
-  {id:'habit_pack', type:'consumable', icon:'🧰', title:'Habit-Schutz Pack', desc:'3 Habit-Schutz-Ladungen auf einmal.', price:1200, levelReq:8, key:'habitShields', amount:3},
-
-  {id:'title_zen', type:'title', icon:'🧘', title:'Zen-Mönch', desc:'Ruhiger Fokus durch Beständigkeit.', price:500, levelReq:5},
-  {id:'title_morgen', type:'title', icon:'🌅', title:'Morgenstarter', desc:'Für frühe Produktivität.', price:350, levelReq:3},
-  {id:'title_fokus', type:'title', icon:'⚡', title:'Fokusmeister', desc:'Konzentriert und entschlossen.', price:1200, levelReq:10},
-  {id:'title_hueter', type:'title', icon:'🔥', title:'Streak-Hüter', desc:'Du lässt Serien nicht sterben.', price:900, levelReq:8},
-  {id:'title_sidequest', type:'title', icon:'🗺️', title:'Sidequest-Held', desc:'Auch kleine Schritte zählen.', price:650, levelReq:6},
-  {id:'title_zieljaeger', type:'title', icon:'🎯', title:'Zieljäger', desc:'Immer auf das Wesentliche.', price:850, levelReq:7},
-  {id:'title_rhythmus', type:'title', icon:'🥁', title:'Rhythmus-König', desc:'Disziplin mit Takt.', price:1100, levelReq:9},
-  {id:'title_architekt', type:'title', icon:'🏗️', title:'Disziplin-Architekt', desc:'Du baust Routinen mit System.', price:1400, levelReq:12},
-  {id:'title_xp', type:'title', icon:'💎', title:'XP-Sammler', desc:'Jede Aufgabe zahlt sich aus.', price:700, levelReq:6},
-  {id:'title_ruhe', type:'title', icon:'🌙', title:'Ruhepol', desc:'Gelassen trotz vollem Plan.', price:600, levelReq:5},
-  {id:'title_taktiker', type:'title', icon:'♟️', title:'Taktiker', desc:'Erst denken, dann machen.', price:1000, levelReq:8},
-  {id:'title_lern', type:'title', icon:'📚', title:'Lernmaschine', desc:'Wissen ist dein täglicher Treibstoff.', price:950, levelReq:7},
-  {id:'title_ausdauer', type:'title', icon:'🏃', title:'Ausdauer-Ass', desc:'Du bleibst dran.', price:1050, levelReq:9},
-  {id:'title_prio', type:'title', icon:'📌', title:'Prioritäten-Profi', desc:'Wichtige Dinge zuerst.', price:1150, levelReq:10},
-  {id:'title_planer', type:'title', icon:'🗓️', title:'Planungs-Guru', desc:'Dein Kalender gehorcht dir.', price:1300, levelReq:11},
-  {id:'title_habit', type:'title', icon:'🌳', title:'Gewohnheits-Schmied', desc:'Routinen werden bei dir geschmiedet.', price:1450, levelReq:12},
-  {id:'title_deep', type:'title', icon:'🧠', title:'Deep-Work-Meister', desc:'Tiefe Arbeit, große Wirkung.', price:1600, levelReq:13},
-  {id:'title_sprint', type:'title', icon:'🏁', title:'Sprint-Kommandant', desc:'Kurze Sprints, starke Ergebnisse.', price:900, levelReq:7},
-  {id:'title_konsistenz', type:'title', icon:'🪨', title:'Konsistenz-Legende', desc:'Du bist verlässlich wie ein Uhrwerk.', price:1800, levelReq:14},
-  {id:'title_falke', type:'title', icon:'🦅', title:'Fortschritts-Falke', desc:'Du erkennst Chancen früh.', price:1250, levelReq:10},
-  {id:'title_kalender', type:'title', icon:'📆', title:'Kalendermagier', desc:'Zeit wird bei dir planbar.', price:1000, levelReq:8},
-  {id:'title_sensei', type:'title', icon:'🥋', title:'Struktur-Sensei', desc:'Ordnung ist deine Superkraft.', price:1700, levelReq:13},
-  {id:'title_erfolg', type:'title', icon:'🏆', title:'Erfolgsingenieur', desc:'Du konstruierst Erfolg.', price:1900, levelReq:15},
-  {id:'title_routine', type:'title', icon:'🔁', title:'Meister der Routine', desc:'Beständigkeit auf höchstem Niveau.', price:2000, levelReq:16},
-  {id:'title_elite', type:'title', icon:'🛸', title:'Elite-Fokussierer', desc:'Ablenkung hat bei dir kaum Chancen.', price:2200, levelReq:17},
-  {id:'title_momentum', type:'title', icon:'👑', title:'Momentum-Ikone', desc:'Der ultimative Titel deiner Reise.', price:2600, levelReq:20}
+{id:'streak_shield', type:'consumable', icon:'🛡️', title:'Streak-Schild', desc:'Rettet deine normale Tages-Streak bei einem verpassten Tag.', price:600, levelReq:1, key:'shields', amount:1},
+  {id:'habit_guard', type:'consumable', icon:'🌱', title:'Habit-Schutz', desc:'Rettet eine Gewohnheit, wenn du einen Habit-Tag verpasst.', price:900, levelReq:3, key:'habitShields', amount:1},
+  {id:'streak_pack', type:'consumable', icon:'📦', title:'Streak-Schild Pack', desc:'3 Streak-Schilde auf einmal.', price:1600, levelReq:6, key:'shields', amount:3},
+  {id:'habit_pack', type:'consumable', icon:'🧰', title:'Habit-Schutz Pack', desc:'3 Habit-Schutz-Ladungen auf einmal.', price:2400, levelReq:8, key:'habitShields', amount:3},
+  {id:'streak_pack_xl', type:'consumable', icon:'🎒', title:'Streak-Schild XL-Pack', desc:'5 Streak-Schilde auf einmal.', price:3600, levelReq:10, key:'shields', amount:5},
+  {id:'habit_pack_xl', type:'consumable', icon:'🗃️', title:'Habit-Schutz XL-Pack', desc:'5 Habit-Schutz-Ladungen auf einmal.', price:4800, levelReq:12, key:'habitShields', amount:5},
+  {id:'streak_shield_mega', type:'consumable', icon:'🛡️✨', title:'Streak-Schild Mega', desc:'10 Streak-Schilde auf einmal.', price:6000, levelReq:14, key:'shields', amount:10},
+  {id:'habit_guard_mega', type:'consumable', icon:'🌳', title:'Habit-Schutz Mega', desc:'10 Habit-Schutz-Ladungen auf einmal.', price:8000, levelReq:15, key:'habitShields', amount:10},
+  {id:'title_zen', type:'title', icon:'🧘', title:'Zen-Mönch', desc:'Ruhiger Fokus durch Beständigkeit.', price:1000, levelReq:5},
+  {id:'title_morgen', type:'title', icon:'🌅', title:'Morgenstarter', desc:'Für frühe Produktivität.', price:700, levelReq:3},
+  {id:'title_fokus', type:'title', icon:'⚡', title:'Fokusmeister', desc:'Konzentriert und entschlossen.', price:2400, levelReq:10},
+  {id:'title_hueter', type:'title', icon:'🔥', title:'Streak-Hüter', desc:'Du lässt Serien nicht sterben.', price:1800, levelReq:8},
+  {id:'title_sidequest', type:'title', icon:'🗺️', title:'Sidequest-Held', desc:'Auch kleine Schritte zählen.', price:1300, levelReq:6},
+  {id:'title_zieljaeger', type:'title', icon:'🎯', title:'Zieljäger', desc:'Immer auf das Wesentliche.', price:1700, levelReq:7},
+  {id:'title_rhythmus', type:'title', icon:'🥁', title:'Rhythmus-König', desc:'Disziplin mit Takt.', price:2200, levelReq:9},
+  {id:'title_architekt', type:'title', icon:'🏗️', title:'Disziplin-Architekt', desc:'Du baust Routinen mit System.', price:2800, levelReq:12},
+  {id:'title_xp', type:'title', icon:'💎', title:'XP-Sammler', desc:'Jede Aufgabe zahlt sich aus.', price:1400, levelReq:6},
+  {id:'title_ruhe', type:'title', icon:'🌙', title:'Ruhepol', desc:'Gelassen trotz vollem Plan.', price:1200, levelReq:5},
+  {id:'title_taktiker', type:'title', icon:'♟️', title:'Taktiker', desc:'Erst denken, dann machen.', price:2000, levelReq:8},
+  {id:'title_lern', type:'title', icon:'📚', title:'Lernmaschine', desc:'Wissen ist dein täglicher Treibstoff.', price:1900, levelReq:7},
+  {id:'title_ausdauer', type:'title', icon:'🏃', title:'Ausdauer-Ass', desc:'Du bleibst dran.', price:2100, levelReq:9},
+  {id:'title_prio', type:'title', icon:'📌', title:'Prioritäten-Profi', desc:'Wichtige Dinge zuerst.', price:2300, levelReq:10},
+  {id:'title_planer', type:'title', icon:'🗓️', title:'Planungs-Guru', desc:'Dein Kalender gehorcht dir.', price:2600, levelReq:11},
+  {id:'title_habit', type:'title', icon:'🌳', title:'Gewohnheits-Schmied', desc:'Routinen werden bei dir geschmiedet.', price:2900, levelReq:12},
+  {id:'title_deep', type:'title', icon:'🧠', title:'Deep-Work-Meister', desc:'Tiefe Arbeit, große Wirkung.', price:3200, levelReq:13},
+  {id:'title_sprint', type:'title', icon:'🏁', title:'Sprint-Kommandant', desc:'Kurze Sprints, starke Ergebnisse.', price:1800, levelReq:7},
+  {id:'title_konsistenz', type:'title', icon:'🪨', title:'Konsistenz-Legende', desc:'Du bist verlässlich wie ein Uhrwerk.', price:3600, levelReq:14},
+  {id:'title_falke', type:'title', icon:'🦅', title:'Fortschritts-Falke', desc:'Du erkennst Chancen früh.', price:2500, levelReq:10},
+  {id:'title_kalender', type:'title', icon:'📆', title:'Kalendermagier', desc:'Zeit wird bei dir planbar.', price:2000, levelReq:8},
+  {id:'title_sensei', type:'title', icon:'🥋', title:'Struktur-Sensei', desc:'Ordnung ist deine Superkraft.', price:3400, levelReq:13},
+  {id:'title_erfolg', type:'title', icon:'🏆', title:'Erfolgsingenieur', desc:'Du konstruierst Erfolg.', price:3800, levelReq:15},
+  {id:'title_routine', type:'title', icon:'🔁', title:'Meister der Routine', desc:'Beständigkeit auf höchstem Niveau.', price:4000, levelReq:16},
+  {id:'title_elite', type:'title', icon:'🛸', title:'Elite-Fokussierer', desc:'Ablenkung hat bei dir kaum Chancen.', price:4400, levelReq:17},
+  {id:'title_momentum', type:'title', icon:'👑', title:'Momentum-Ikone', desc:'Der ultimative Titel deiner Reise.', price:5200, levelReq:20}
 ];
 
 function renderShop(){
@@ -726,7 +720,7 @@ function renderShop(){
   document.getElementById('seasonXpDisplay').textContent = `${state.season.xp} / 2000 XP`;
   const track = document.getElementById('seasonTrack');
   track.innerHTML = '';
-  const rewards = [{xp:500, emoji:'🌱', n:'Bronze'}, {xp:1000, emoji:'🥈', n:'Silber'}, {xp:2000, emoji:'👑', n:'Gold'}];
+  const rewards = [{xp:750, emoji:'🌱', n:'Bronze'}, {xp:1500, emoji:'🥈', n:'Silber'}, {xp:3000, emoji:'👑', n:'Gold'}];
   rewards.forEach(r=>{
     const unlocked = state.season.xp >= r.xp;
     track.innerHTML += `<div class="season-reward ${unlocked?'unlocked':''}"><div class="req">${r.xp} XP</div><div style="font-size:28px">${r.emoji}</div><div style="font-size:12px; font-weight:700">${r.n}</div></div>`;
