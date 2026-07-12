@@ -181,7 +181,9 @@ function defaultState(){
   return {
     goals: [], completions: {}, overrides: {}, dayOrder: {}, totalXp: 0, availableXp: 0,
     unlockedAchievements: [], habitsCompleted: 0, completedCategories: [], subquestCompletions: {},
-shop: { shields: 0, habitShields: 0, ownedTitles: [], shieldedDays: [], habitShieldedMisses: [] },    settings: { accent: '#5B8CFF', theme: 'dark', resetHour: 0 }
+    shop: { shields: 0, habitShields: 0, ownedTitles: [], shieldedDays: [], habitShieldedMisses: [] },
+    settings: { accent: '#5B8CFF', theme: 'dark', resetHour: 0 },
+    equipped: { title: null }
   };
 }
 
