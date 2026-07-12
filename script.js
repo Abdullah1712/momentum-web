@@ -493,7 +493,17 @@ function toggleTaskDone(dateStr, goalId, cardElement){
   state.completions[dateStr][goalId] = {done:newDone, xp:goal.xp};
   
   if(newDone){
-    state.totalXp += goal.xp; state.availableXp += goal.xp; state.season.xp += goal.xp;
+    state.totalXp += goal.xp; state.availableXp += goal.xp;
+    function defaultState(){
+  return {
+    goals: [], completions: {}, overrides: {}, dayOrder: {}, totalXp: 0, availableXp: 0,
+    unlockedAchievements: [], habitsCompleted: 0, completedCategories: [], subquestCompletions: {},
+    shop: { shields: 0, habitShields: 0, ownedTitles: [], shieldedDays: [], habitShieldedMisses: [] },
+    settings: { accent: '#5B8CFF', theme: 'dark', resetHour: 0 },
+    equipped: { title: null },
+    season: { xp: 0 }
+  };
+}
     if(!state.completedCategories.includes(goal.category)) state.completedCategories.push(goal.category);
     fireCardConfetti(cardElement);
   } else {
