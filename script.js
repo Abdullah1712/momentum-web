@@ -779,7 +779,7 @@ window.buyShopItem = function(id){
   renderDashboard();
 };
 
-window.buyShield = function(){ buyShopItem('streak_shield'); };
+window.buyShield = function(){ buyShopItem('streak_shield');{if(state.shop.shields+count>3){toast("Maximal 3 Schilder erlaubt!","error");return;}if(state.availableXp>=cost){state.availableXp-=cost;state.shop.shields+=count;addSpent(cost);saveState();renderShop();renderDashboard();toast(count+" Streak-Schilder gekauft!","success");}else toast("Nicht genug XP!","error");}; };
 window.buyTitle = function(name){
   const item = SHOP_ITEMS.find(x=>x.title===name && x.type==='title');
   if(item) buyShopItem(item.id);
