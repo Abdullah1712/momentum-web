@@ -96,7 +96,6 @@ async function loadStateFromSupabase(){
 loadStateFromSupabase();
 // 5. Restlicher Code
 
-    console.log("Das Theme ist:", state.settings.theme); 
 const ICONS = {
   home:'<path d="M4 11.5 12 4l8 7.5"/><path d="M6 10v9a1 1 0 0 0 1 1h4v-6h2v6h4a1 1 0 0 0 1-1v-9"/>',
   calendar:'<rect x="3.5" y="5" width="17" height="16" rx="3"/><path d="M3.5 10h17"/><path d="M8 3v4"/><path d="M16 3v4"/>',
@@ -153,16 +152,6 @@ async function loadWisdom(){
     };
   }
   if (typeof renderDashboard === 'function') renderDashboard();
-}
-
-// 4. TEST-BLOCK (hier ist er sicher platziert)
-async function testConnection() {
-    const { data, error } = await supabase.from('daten').select('*').limit(1);
-    if (error) {
-        console.error("Verbindung fehlgeschlagen:", error.message);
-    } else {
-        console.log("Verbindung steht! Supabase ist bereit.");
-    }
 }
 
 const WEEKDAY_LABELS = ['So','Mo','Di','Mi','Do','Fr','Sa'];
@@ -779,11 +768,6 @@ window.buyShopItem = function(id){
   renderDashboard();
 };
 
-window.buyShield = function(){ buyShopItem('streak_shield');{if(state.shop.shields+count>3){toast("Maximal 3 Schilder erlaubt!","error");return;}if(state.availableXp>=cost){state.availableXp-=cost;state.shop.shields+=count;addSpent(cost);saveState();renderShop();renderDashboard();toast(count+" Streak-Schilder gekauft!","success");}else toast("Nicht genug XP!","error");}; };
-window.buyTitle = function(name){
-  const item = SHOP_ITEMS.find(x=>x.title===name && x.type==='title');
-  if(item) buyShopItem(item.id);
-};
 window.equipTitle = function(name){
   state.equipped.title = state.equipped.title === name ? null : name;
   saveState();
@@ -1332,7 +1316,6 @@ function init(){
 
 init();
 loadWisdom()
-testConnection()
 const hamburgerBtn = document.getElementById('hamburgerBtn');
 const sidebarEl = document.querySelector('.sidebar');
 const sidebarBackdrop = document.getElementById('sidebarBackdrop');
