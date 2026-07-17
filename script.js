@@ -93,7 +93,7 @@ async function loadStateFromSupabase(){
     }
   }
 }
-loadStateFromSupabase();
+loadStateFromSupabase().then(()=> syncAiProfileFromAuth());
 // 5. Restlicher Code
 
 const ICONS = {
@@ -173,8 +173,21 @@ function defaultState(){
     shop: { shields: 0, habitShields: 0, ownedTitles: [], shieldedDays: [], habitShieldedMisses: [] },
     settings: { accent: '#5B8CFF', theme: 'dark', resetHour: 0 },
     equipped: { title: null },
-    season: { xp: 0 }
+    season: { xp: 0 },
+    aiProfile: { city: 'Chemnitz', role: 'user', displayName: null }
   };
+}
+
+// Admin-E-Mails: diese Accounts bekommen role:'admin' im KI-Kontext.
+// Trag hier die E-Mail(s) ein, die als Admin gelten sollen.
+const AI_ADMIN_EMAILS = ['a628885544@gmail.com'];
+
+async function syncAiProfileFromAuth(){
+  const { data: { user } } = await supabase.auth.getUser();
+  if(!user) return;
+  if(!state.aiProfile) state.aiProfile = { city: 'Chemnitz', role: 'user', displayName: null };
+  if(!state.aiProfile.displayName) state.aiProfile.displayName = user.email.split('@')[0];
+  state.aiProfile.role = AI_ADMIN_EMAILS.includes(user.email) ? 'admin' : 'user';
 }
 
 
@@ -830,12 +843,13 @@ function appendAiMsg(text, sender='bot', store=true){
 }
 function setAiStatus(mode='local'){
   if(!aiStatus) return;
-  aiStatus.textContent = 'Lokal';
-  aiStatus.className = 'ai-status local';
+  aiStatus.textContent = mode === 'cloud' ? 'KI' : 'Lokal';
+  aiStatus.className = 'ai-status ' + (mode === 'cloud' ? 'cloud' : 'local');
 }
 async function getWeatherContext(){
+  const city = (state.aiProfile && state.aiProfile.city) || 'Chemnitz';
   try {
-    const res = await fetch('https://wttr.in/Chemnitz?format=j1');
+    const res = await fetch(`https://wttr.in/${encodeURIComponent(city)}?format=j1`);
     const data = await res.json();
     const current = data.current_condition?.[0] || {};
     const weatherDays = data.weather || [];
@@ -872,7 +886,7 @@ async function getWeatherContext(){
 
     return {
       ok: true,
-      city: 'Chemnitz',
+      city,
       current: {
         description: currentDesc,
         tempC: currentTemp,
@@ -888,7 +902,7 @@ async function getWeatherContext(){
   } catch(e){
     return {
       ok:false,
-      city:'Chemnitz',
+      city,
       current:{ description:'unbekannt', tempC:null, feelsLikeC:null, raining:false, windKmph:null, goodOutdoor:null },
       today:null,
       tomorrow:null,
@@ -1155,6 +1169,22 @@ ${choice.reason}`;
   saveAiState();
   return `Ich kann dir helfen bei:\n- Motivation\n- Tagesplanung\n- Wetter in Chemnitz (jetzt, heute, morgen, übermorgen)\n- Kleidung / Jacke\n- Fokus & Konzentration\n- Outdoor-Sport & Lernwetter\n- Lernen oder Sport\n- Nächste Aufgabe\n- Tipps zu deinen Zielen\n\nProbier z. B.:\n„Brauche ich heute eine Jacke?“\n„Regnet es morgen?“\n„Ist morgen gutes Lernwetter?“\n„Soll ich Outdoor-Sport heute oder morgen machen?“\n„Soll ich jetzt lernen oder Sport machen?“`;
 }
+// Erkennt, ob der Nutzer eine neue Stadt/einen neuen Wohnort nennt, und merkt sie sich dauerhaft
+// (wird über state -> saveState() automatisch in Supabase gespeichert, accountgebunden).
+function detectAndSaveCity(text){
+  const m = text.match(/\b(?:ich wohne in|ich lebe in|ich bin (?:aus|in)|meine stadt ist|mein wohnort ist)\s+([A-ZÄÖÜ][a-zäöüß\-]+(?:\s[A-ZÄÖÜ][a-zäöüß\-]+)?)/i);
+  if(m && m[1]){
+    const city = m[1].trim();
+    if(!state.aiProfile) state.aiProfile = { city:'Chemnitz', role:'user', displayName:null };
+    if(state.aiProfile.city !== city){
+      state.aiProfile.city = city;
+      saveState();
+      return city;
+    }
+  }
+  return null;
+}
+
 window.sendAiMsg = async function(text){
   if(!text) text = aiInput.value.trim();
   if(!text) return;
@@ -1167,15 +1197,33 @@ window.sendAiMsg = async function(text){
   aiBody.appendChild(loadDiv);
   aiBody.scrollTop = aiBody.scrollHeight;
 
+  const updatedCity = detectAndSaveCity(text);
   const weather = await getWeatherContext();
-  const ctx = getAiContext(weather);
-  const reply = buildLocalAiReply(text, ctx);
 
-  setTimeout(()=>{
+  try {
+    const res = await fetch('/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: text,
+        history: aiHistory,
+        profile: state.aiProfile || { city: 'Chemnitz', role: 'user', displayName: null },
+        goals: (state.goals || []).map(g => ({ title:g.title, category:g.category, priority:g.priority, xp:g.xp, done: !!g.doneToday })),
+        weather
+      })
+    });
+    const data = await res.json();
+    loadDiv.remove();
+    setAiStatus('cloud');
+    let reply = data.reply || 'Entschuldigung, da ist etwas schiefgelaufen.';
+    if(updatedCity) reply += `\n\n(Ich habe mir gemerkt: dein Wohnort ist jetzt ${updatedCity}.)`;
+    appendAiMsg(reply, 'bot');
+  } catch(e){
     loadDiv.remove();
     setAiStatus('local');
-    appendAiMsg(reply, 'bot');
-  }, 350);
+    const ctx = getAiContext(weather);
+    appendAiMsg(buildLocalAiReply(text, ctx), 'bot');
+  }
 };
 
 /* GOAL MODAL & FORMS */
