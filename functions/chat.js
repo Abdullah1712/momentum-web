@@ -5,7 +5,7 @@
 // mitgeschickten Nutzerkontext (Profil, Ziele, Wetter, Rolle) zusammen.
 // Der API-Key bleibt server-seitig (Environment Variable GEMINI_API_KEY).
 
-const GEMINI_MODEL = "gemini-2.5-flash";
+const GEMINI_MODEL = "gemini-flash-latest";
 
 export async function onRequestPost(context) {
   const { request, env } = context;
