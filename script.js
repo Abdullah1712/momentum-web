@@ -846,8 +846,17 @@ function setAiStatus(mode='local'){
   aiStatus.textContent = mode === 'cloud' ? 'KI' : 'Lokal';
   aiStatus.className = 'ai-status ' + (mode === 'cloud' ? 'cloud' : 'local');
 }
+const WEATHER_CACHE_MS = 30 * 60 * 1000; // 30 Minuten
 async function getWeatherContext(){
   const city = (state.aiProfile && state.aiProfile.city) || 'Chemnitz';
+  const cacheKey = 'm_weather_cache';
+  try {
+    const cached = JSON.parse(localStorage.getItem(cacheKey) || 'null');
+    if(cached && cached.city === city && (Date.now() - cached.ts) < WEATHER_CACHE_MS){
+      return cached.data;
+    }
+  } catch(e){ /* ignore, fetch fresh */ }
+
   try {
     const res = await fetch(`https://wttr.in/${encodeURIComponent(city)}?format=j1`);
     const data = await res.json();
@@ -884,7 +893,7 @@ async function getWeatherContext(){
     const tomorrowForecast = makeDay(weatherDays[1], 'morgen');
     const dayAfterForecast = makeDay(weatherDays[2], 'übermorgen');
 
-    return {
+    const result = {
       ok: true,
       city,
       current: {
@@ -899,6 +908,8 @@ async function getWeatherContext(){
       tomorrow: tomorrowForecast,
       dayAfterTomorrow: dayAfterForecast
     };
+    try { localStorage.setItem(cacheKey, JSON.stringify({ city, ts: Date.now(), data: result })); } catch(e){}
+    return result;
   } catch(e){
     return {
       ok:false,
